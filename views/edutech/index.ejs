@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduTech</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+
+    <!-- Your additional CSS files -->
+    <link rel="stylesheet" href="/css/animate.css" />
+    <link rel="stylesheet" href="/css/edutech/style.css" />
+  </head>
+  <body>
+    <header class="bg-primary text-white text-center py-4" id="main-header">
+      <h1 class="edutech_name">EduTech</h1>
+      <nav>
+        <ul class="nav row">
+          <li class="nav-item col bold animate__animated">
+            <a
+              href="#documents"
+              class="nav-link animate__animated text-white document"
+              >Documents</a
+            >
+          </li>
+          <li class="nav-item col bold animate__animated">
+            <a
+              href="#videos"
+              class="nav-link animate__animated text-white videos"
+              >Videos</a
+            >
+          </li>
+          <li class="nav-item col bold animate__animated">
+            <a
+              href="#articles"
+              class="nav-link animate__animated text-white articles"
+              >Articles</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="container my-4 animate__animated edutech_content">
+      <!-- Documents Section -->
+      <section id="documents" style="display: none" class="animate__animated">
+        <div id="main-header2">
+          <h2 class="my-3 docu_txt">Documents</h2>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search..."
+              aria-label="Search"
+              aria-describedby="searchBtn"
+            />
+            <button class="btn search-btn" type="button" id="searchBtn">
+              Search
+            </button>
+          </div>
+        </div>
+        <div class="animate__animated docu__content my-5">
+          <div class="justify-content-center row content__object">
+            <span class="col">1</span>
+            <p class="col overflow-ellipsis docu__content_name">
+              hskjdhjhfjsdhfjsdhfhjhhudhjdsbsuh sd fdshsfhdsfjhbfd fhd fdfbhsdzj
+            </p>
+            <p class="col text-primary docu_view">view</p>
+            <p class="col text-danger">pdf</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Videos Section -->
+      <section id="videos" style="display: none" class="animate__animated">
+        <div id="main-header2">
+          <h2 class="my-4">Videos</h2>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search..."
+              aria-label="Search"
+              aria-describedby="searchBtn"
+            />
+            <button class="btn search-btn" type="button" id="searchBtn">
+              Search
+            </button>
+          </div>
+        </div>
+        <div class="video_content content mt-5">
+          <div class="content__object mt-3">
+            <div class="app__video">
+              <video id="myVideo" controls loop muted>
+                <source src="/videos/test.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <p class="">1</p>
+            <p class="">Video name</p>
+            <div class="app__download-button">
+              <button id="downloadBtn" class="btn btn-success">Download</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Articles Section -->
+      <section id="articles" style="display: none" class="animate__animated">
+        <div id="main-header2">
+          <h2 class="my-3 arti_txt">Articles</h2>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search by topics..."
+              aria-label="Search"
+              aria-describedby="searchBtn"
+            />
+            <button class="btn search-btn" type="button" id="searchBtn">
+              Search
+            </button>
+          </div>
+        </div>
+        <div class="animate__animated arti__content my-5">
+          <div class="justify-content-center row content__object arti__obj">
+            <h3 class="p-3 arti_title text-muted">Article title</h3>
+            <span class="arti_by"
+              >by <b class="arti_by-name">publisher</b></span
+            >
+            <div class="arti_body-container">
+              <p class="arti_body text-center mb-3">
+                dfsfdjhjfhdhfsdhfbsdsdfhfjhfshfhhsdjklfhjsdhjfhhsjhfjzncnnjvsnjc
+              </p>
+              <span
+                class="read-more-btn btn-stripped btn-right text-white btn bg-primary"
+                onclick="toggleReadMore()"
+              >
+                Read More
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <p class="text-center my-4 txt">
+        Welcome to Niki's education hub. Navigate through the links to retrieve
+        educational materials
+      </p>
+    </div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Your other scripts -->
+    <script type="module" src="/js/edutech/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,214 @@
+@import url(../fonts.css);
+
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  z-index: 0 !important;
+}
+
+#main-header,
+#main-header2 {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #007bff; /* Royal Blue Bootstrap color */
+  color: #ffffff; /* White text color */
+  padding: 20px;
+  transition: padding 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  z-index: 1 !important;
+}
+
+#main-header2 {
+  background-color: white;
+}
+
+/* Box shadow when scrolled down */
+#main-header.scrolled,
+#main-header2.scrolled {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Animated header on scroll up */
+.header-up {
+  padding: 10px;
+}
+
+.edutech_content,
+.docu__content,
+.arti__content,
+.video_content {
+  margin: 12em 0em !important;
+}
+
+.fadeAnim {
+  animation-name: fade;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes fade {
+  5% {
+    opacity: 0.5;
+  }
+  15% {
+    opacity: 1;
+  }
+}
+
+header {
+  background-color: #081f2eb6;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  font-family: "Alata";
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+section {
+  margin: 20px;
+}
+
+h2 {
+  color: #333;
+}
+
+#documents,
+#videos {
+  display: flex;
+  flex-direction: column;
+}
+
+.docu_txt,
+.arti_txt {
+  letter-spacing: 1.5px;
+  font-family: "Arima", "Times New Roman", serif;
+}
+
+.edutech_name {
+  cursor: pointer;
+}
+
+.arti_body-container {
+  position: relative;
+  max-height: 120px; /* Set a maximum height for the collapsed text */
+  overflow: hidden;
+}
+
+.arti_body {
+  margin-bottom: 0; /* Remove default bottom margin */
+}
+
+.read-more-btn {
+  background-color: #ff4d4d; /* Red background color */
+  color: #fff; /* White text color */
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: block; /* Initially show the button */
+}
+
+.read-more-btn:hover {
+  background-color: #cc0000; /* Darker red on hover */
+}
+
+.arti__obj {
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.136) !important;
+}
+
+.docu__content,
+.arti__content,
+.docu_search,
+.vid_search {
+  position: relative;
+  z-index: 0 !important;
+}
+
+.docu_search,
+.vid_search {
+  margin-top: 2em;
+}
+
+.content__object {
+  border-bottom: 0.3px solid #081f2e4b;
+  padding-top: 1em;
+  cursor: pointer;
+  margin-top: 2em;
+}
+
+.content__object span {
+  color: #333;
+  opacity: 0.4;
+}
+
+.overflow-ellipsis {
+  overflow: hidden;
+  white-space: nowrap !important;
+  text-overflow: ellipsis;
+}
+
+.content__details_page {
+  font-family: "Be Vietnam Pro";
+  box-shadow: 0 0 44px 5px rgba(51, 51, 51, 0.405);
+  z-index: 1 !important;
+  flex-direction: column;
+}
+
+.content__details_page p b {
+  font-family: "Alata";
+}
+
+.slow-smooth-fade-out-element {
+  opacity: 0.2;
+}
+
+.app__video {
+  height: 100%;
+  position: relative;
+}
+
+.app__video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.app__download-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 15px;
+}
+
+.search-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: 1px solid #007bff;
+  padding: 8px 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+  background-color: #0056b3;
+}

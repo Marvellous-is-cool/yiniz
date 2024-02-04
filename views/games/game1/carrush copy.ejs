@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap"
+    />
+    <title>Car Rush</title>
+  </head>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: url(/images/games/game1/bck.jpg) no-repeat center;
+      background-size: cover;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+
+    #interface {
+      font-family: "Roboto", sans-serif;
+      color: royalblue;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #game-container {
+      display: none;
+    }
+
+    #loading {
+      font-family: "Roboto", sans-serif;
+      text-align: center;
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #road {
+      background: url(/images/games/game1/road.png) repeat-y;
+      height: 1200vh;
+      width: 50vw;
+      position: relative;
+      top: -80vh;
+      z-index: -9;
+    }
+
+    #start {
+      position: absolute;
+      z-index: 100;
+      font-size: 2rem;
+      background-color: rgb(245, 99, 99);
+      color: white;
+      padding: 5px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    #score {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 2rem;
+      padding: 5px;
+      background-color: white;
+      border-radius: 20px;
+    }
+
+    .enemy-car {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      z-index: 1001;
+      overflow: hidden;
+    }
+
+    .ecarimg {
+      width: 80px;
+      border: 2px solid red;
+    }
+
+    .mycarimg {
+      border: 2px solid red;
+      width: 80px;
+    }
+
+    #mycar {
+      width: 100px;
+      height: 100px;
+      position: relative;
+      top: 15vh;
+    }
+
+    @keyframes eyou {
+      0% {
+        top: -30vh;
+      }
+
+      100% {
+        top: 100vh;
+      }
+    }
+
+    @keyframes ecar2 {
+      0% {
+        top: -50vh;
+      }
+
+      100% {
+        top: 100vh;
+      }
+    }
+
+    @keyframes ecar3 {
+      0% {
+        top: -60vh;
+      }
+
+      100% {
+        top: 100vh;
+      }
+    }
+
+    @keyframes ecar4 {
+      0% {
+        top: -80vh;
+      }
+
+      100% {
+        top: 100vh;
+      }
+    }
+  </style>
+
+  <body>
+    <div id="interface">
+      <h1
+        class="animate__animated animate__fadeInDown"
+        style="color: royalblue; font-size: 3rem"
+      >
+        Car Rush
+      </h1>
+      <p>Welcome to Car Rush!</p>
+      <p>Instructions:</p>
+      <p>Use W, A, S, D to move. Avoid other cars!</p>
+      <button id="start">Start</button>
+    </div>
+
+    <div id="loading">
+      <h2 class="animate__animated animate__flash">Loading...</h2>
+    </div>
+
+    <div id="score">Score: 0</div>
+
+    <div id="game-container">
+      <div id="enemyyou" class="enemy-car">
+        <img class="ecarimg" src="/images/games/game1/car2.png" alt="" />
+      </div>
+      <div id="enemycar2" class="enemy-car">
+        <img class="ecarimg" src="/images/games/game1/car3.png" alt="" />
+      </div>
+      <div id="enemycar3" class="enemy-car">
+        <img class="ecarimg" src="/images/games/game1/car2.png" alt="" />
+      </div>
+      <div id="enemycar4" class="enemy-car">
+        <img class="ecarimg" src="/images/games/game1/car3.png" alt="" />
+      </div>
+
+      <div id="mycar">
+        <img class="mycarimg" src="/images/games/game1/you.png" alt="" />
+      </div>
+      <div id="road"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/collisions/1.0.3/collisions.min.js"></script>
+
+    <script>
+      document.getElementById("start").addEventListener("click", function () {
+        document.getElementById("interface").style.display = "none";
+        document.getElementById("loading").style.display = "block";
+
+        setTimeout(function () {
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("game-container").style.display = "block";
+
+          let t = 15;
+          let l = 0;
+          let n = 0;
+
+          let myCar = document.getElementById("mycar");
+          let scoreDisplay = document.getElementById("score");
+
+          window.addEventListener("keydown", function (x) {
+            if (x.keyCode == 87) {
+              t = t - 3;
+            }
+            if (x.keyCode == 65) {
+              l = l - 1;
+            }
+            if (x.keyCode == 83) {
+              t = t + 3;
+            }
+            if (x.keyCode == 68) {
+              l = l + 1;
+            }
+            myCar.style.top = `${t}vh`;
+            myCar.style.left = `${l}vw`;
+          });
+
+          function detectCollision(you, car2) {
+            return collisions.rectRect(
+              you.getBoundingClientRect(),
+              car2.getBoundingClientRect()
+            );
+          }
+
+          function checkCollisions() {
+            let enemyCars = document.querySelectorAll(".enemy-car");
+
+            enemyCars.forEach((enemyCar) => {
+              if (detectCollision(myCar, enemyCar)) {
+                gameOver();
+              }
+            });
+          }
+
+          function updateScore() {
+            scoreDisplay.innerText = `Score: ${n}`;
+            n++;
+          }
+
+          function gameOver() {
+            alert(`Game Over! Your Score: ${n}`);
+            location.reload();
+          }
+
+          setInterval(() => {
+            updateScore();
+            checkCollisions();
+          }, 100);
+
+          setInterval(() => {
+            num = Math.floor(Math.random() * (350 - 230 + 1) + 230);
+            document.getElementById("enemyyou").style.left = `${num}px`;
+          }, 3000);
+          setInterval(() => {
+            num = Math.floor(Math.random() * (150 - 50 + 1) + 50);
+            document.getElementById("enemycar2").style.left = `${num}px`;
+          }, 6000);
+          setInterval(() => {
+            num = Math.floor(Math.random() * (-50 + 140 + 1) - 140);
+            document.getElementById("enemycar3").style.left = `${num}px`;
+          }, 5000);
+          setInterval(() => {
+            num = Math.floor(Math.random() * (-220 + 330 + 1) - 330);
+            document.getElementById("enemycar4").style.left = `${num}px`;
+          }, 4000);
+
+          document.getElementById("enemyyou").style.animation =
+            "eyou 3s linear infinite";
+          document.getElementById("enemycar2").style.animation =
+            "ecar2 6s linear infinite";
+          document.getElementById("enemycar3").style.animation =
+            "ecar3 5s linear infinite";
+          document.getElementById("enemycar4").style.animation =
+            "ecar4 4s linear infinite";
+        }, 3000); // Loading time (milliseconds)
+      });
+    </script>
+  </body>
+</html>

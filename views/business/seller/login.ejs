@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Yiniz-merce Seller</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+  </head>
+  <body class="text-center">
+    <header>
+      <h1 class="mt-5">Yiniz-merce Seller Login</h1>
+    </header>
+    <section class="mt-5">
+      <!-- Display flash messages -->
+      <% if (flashMessages && flashMessages.error) { %>
+      <div class="alert alert-danger">
+        <% flashMessages.error.forEach(message => { %> <%= message %><br />
+        <% }); %>
+      </div>
+      <% } %>
+
+      <!-- Seller Login Form -->
+      <form action="/seller/login" method="post" id="loginForm">
+        <div class="form-group">
+          <label for="loginUsername">Username:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="loginUsername"
+            name="loginUsername"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password:</label>
+          <input
+            type="password"
+            class="form-control"
+            id="loginPassword"
+            name="loginPassword"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <p class="mt-3" id="toggleSignupText">
+          Don't have an account?
+          <a href="#" onclick="toggleForms()">Sign Up instead</a>
+        </p>
+      </form>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="/js/seller/business/script.js"></script>
+  </body>
+</html>

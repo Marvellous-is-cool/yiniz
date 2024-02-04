@@ -1,0 +1,73 @@
+<!-- views/business/products.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yiniz-merce Stages</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <!-- Add your custom stylesheets if needed -->
+  </head>
+  <body>
+    <header>
+      <h1 class="mt-5">Yiniz-merce</h1>
+    </header>
+    <section class="mt-5">
+      <!-- STAGE 1 -->
+      <div class="filter-section">
+        <h4 class="mb-4">Filter, Search, and Categories</h4>
+        <input
+          type="text"
+          class="form-control filter-input mb-2"
+          placeholder="Search"
+        />
+        <button class="btn btn-primary apply-btn">Apply Filter</button>
+        <!-- Add your filter, search, and categories HTML here -->
+      </div>
+
+      <!-- STAGE 2 -->
+      <div class="product-display">
+        <h4 class="mb-4">Product Display</h4>
+        <div class="row">
+          <!-- Display your products dynamically using EJS -->
+          <% products.forEach(product => { %>
+          <div class="col-md-4">
+            <div class="product-card">
+              <img
+                src="<%= product.picture %>"
+                alt="<%= product.name %>"
+                class="img-fluid mb-3"
+              />
+              <h5><%= product.name %></h5>
+              <p>Price: $<%= product.price.toFixed(2) %></p>
+              <p>Owner: <%= product.owner %></p>
+              <button class="btn btn-success">Connect on WhatsApp</button>
+              <button class="btn btn-primary">Connect on Instagram</button>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+
+      <!-- STAGE 3 -->
+      <footer class="mt-5">
+        <div class="mb-4">
+          <h4>About Us</h4>
+          <!-- Add your about us content here -->
+        </div>
+        <p>
+          &copy; <%= new Date().getFullYear() %> - <%= new Date().getFullYear()
+          !== 2024 ? new Date().getFullYear() : '' %> Yiniz-merce
+        </p>
+      </footer>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Add your custom JavaScript for dynamic content loading here -->
+  </body>
+</html>

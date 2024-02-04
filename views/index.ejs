@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yiniz - Landing Page</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/animate.css" />
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </head>
+  <body class="bg-light">
+    <!-- Landing Page Content -->
+    <div class="container mt-5">
+      <div id="main-header" class="header">
+        <h1 class="text-center">Yiniz</h1>
+        <p class="text-center text-light opacity-25">
+          ... Where business, learning and news meet fun
+        </p>
+      </div>
+
+      <!-- Floating Cards -->
+      <div class="row mt-5 pt-5 float_card justify-content-center">
+        <!-- 'business', 'news', 'games', 'education' cards go here -->
+        <% cards.forEach(card => { %>
+        <div class="col-md-4 ml-2 mb-4">
+          <div class="card floating">
+            <a href="<%= card.link  %>">
+              <div class="card-body">
+                <h5 class="card-title"><%= card.title %></h5>
+                <p class="card-text"><%= card.content %></p>
+              </div>
+            </a>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+
+      <!-- About Us -->
+      <div class="about-us mt-5">
+        <h2 class="text-primary">About Us</h2>
+        <p class="text_muted">
+          Welcome to Yiniz – your gateway to a world of networking, information,
+          knowledge, and innovation. At Yiniz, we believe in connecting people,
+          providing valuable information, fostering learning, and promoting
+          innovation in every aspect of life.
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5 bg-dark text-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <h5>Links</h5>
+            <ul>
+              <li><a href="/ecommerce">Business</a></li>
+              <li><a href="/blog">News</a></li>
+              <li><a href="/games">Games</a></li>
+              <li><a href="/edutech">Edu-Tech</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Job Offers</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12 text-center">
+            <p>
+              &copy; <%= new Date().getFullYear() %> - <%= new
+              Date().getFullYear() !== 2024 ? new Date().getFullYear() : '' %>
+              Yiniz
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/js/script.js"></script>
+  </body>
+</html>
