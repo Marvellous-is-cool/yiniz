@@ -2,6 +2,9 @@
 const express = require("express");
 const router = express.Router();
 const businessRouter = require("./business");
+const blogRouter = require("./blog");
+const gamesRouter = require("./games");
+const edutechRouter = require("./edutech");
 
 // Landing Page Route
 router.get("/", (req, res) => {
@@ -25,27 +28,23 @@ router.get("/", (req, res) => {
     {
       title: "Edu-Tech",
       content: "Unlock knowledge and learning opportunities.",
-      link: "/edu",
+      link: "/edutech",
     },
   ];
 
   res.render("index", { cards });
 });
 
-// Car rush
-router.get("/nikigames/carrush", (req, res) => {
-  res.render("games/game1/carrush");
-});
-
-router.get("/edu", (req, res) => {
-  res.render("edutech/index");
-});
-
-router.get("/blog", (req, res) => {
-  res.render("blog/blogger/login");
-});
-
-// Use the business router for /ecommerce
+// Ecommerce (business) Route
 router.use("/ecommerce", businessRouter);
+
+// Blog (news) Route
+router.use("/blog", blogRouter);
+
+// Games Route
+router.use("/games", gamesRouter);
+
+// Edutech Route
+router.use("/edutech", edutechRouter);
 
 module.exports = router;
