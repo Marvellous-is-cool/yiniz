@@ -1,20 +1,20 @@
 {
-  "name": "niki",
+  "name": "yiniz",
   "version": "1.0.0",
-  "description": "a networking, information, knowledge and innovation hub for everyone",
+  "description": "Where news and business meet fun",
   "main": "app.js",
   "scripts": {
     "test": "node app.js"
   },
   "keywords": [
-    "niki",
+    "yiniz",
     "network",
     "information",
     "knowledge",
     "hub",
     "everyone"
   ],
-  "author": "NIKI Foundations",
+  "author": "yiniz Foundations",
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^5.3.2",
