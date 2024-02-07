@@ -1,0 +1,57 @@
+<!-- views/blogger.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= currentUser.username %> | Blogger</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../css/blog/style.css" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-8">
+          <h1 class="mb-4">Welcome, <%= currentUser.username %>!</h1>
+          <p><%= greeting %></p>
+          <!-- Add more content here as needed -->
+
+          <!-- Section to display posts -->
+          <h2 class="mt-5">Your Posts</h2>
+          <ul class="list-group">
+            <% posts.forEach(post => { %>
+            <li class="list-group-item">
+              <h4><%= post.title %></h4>
+              <p><%= post.content %></p>
+              <!-- Add publish, edit, delete buttons as needed -->
+            </li>
+            <% }); %>
+          </ul>
+        </div>
+
+        <div class="col-md-4">
+          <!-- Logout button -->
+          <a href="/admin/blog/blogger/logout" class="btn btn-danger mt-3"
+            >Log out</a
+          >
+
+          <!-- New Post button -->
+          <a href="/admin/blog/blogger/new-post" class="btn btn-primary mt-3"
+            >New Post</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5 bg-dark text-light text-center py-3">
+      <p>Yiniz-blogger &copy; <%= currentYear %></p>
+      <p><a href="#!" class="text-light">Terms of Service</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
