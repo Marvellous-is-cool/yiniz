@@ -1,4 +1,4 @@
 # .gitignore
-
+/uploads/
 /node_modules
 .env

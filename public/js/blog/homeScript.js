@@ -31,6 +31,14 @@ const expand = document.getElementById("expandedPost");
 const cards = document.getElementById("Cards");
 
 function expandPost(postId) {
+  const loadingIndicator = document.getElementById("loadingIndicator");
+  const expand = document.getElementById("expandedPost");
+  const cards = document.getElementById("Cards");
+
+  // Show loading indicator
+  hid_show(loadingIndicator, "show");
+  add_eff2(loadingIndicator, "s");
+
   // Make an AJAX request to fetch the post content based on the postId
   console.log("Post id: ", postId);
   fetch(`/admin/blog/blogger/posts/${postId}`)
@@ -65,9 +73,15 @@ function expandPost(postId) {
       hid_show(cards, "hide");
       add_eff2(expand, "s");
       add_eff2(cards, "h");
+
+      // Hide loading indicator
+      hid_show(loadingIndicator, "hide");
+      add_eff2(loadingIndicator, "h");
     })
     .catch((error) => {
       console.error("Error fetching post:", error);
+      // Hide loading indicator in case of an error
+      hid_show(loadingIndicator, "hide");
     });
 }
 

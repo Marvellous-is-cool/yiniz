@@ -14,7 +14,8 @@
       /* Add custom styles here */
       body {
         background-color: #000; /* Black background */
-        color: #fff; /* White text */
+        color: #fff;
+        overflow-x: hidden; /* White text */
       }
 
       .carousel-item img {
@@ -46,6 +47,12 @@
 
       li {
         list-style: none;
+      }
+
+      #loadingIndicator {
+        position: fixed !important;
+        border-radius: 0.2em;
+        z-index: 2 !important;
       }
     </style>
   </head>
@@ -125,7 +132,7 @@
                 alt="News Image"
                 onclick="expandPost('<%= post.id %>')"
               />
-              <div class="carousel-caption d-none d-md-block bg-dark w-100">
+              <div class="carousel-caption bg-dark w-100">
                 <h5 class="text-center"><%= post.title %></h5>
                 <p class="text-center">
                   Published by: <%= post.blogger_username %>
@@ -152,6 +159,14 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
           </button>
+        </div>
+
+        <div
+          id="loadingIndicator"
+          class="animate__animated justify-content-center p-2 bg-primary text-white"
+          style="display: none"
+        >
+          <b>Loading...</b>
         </div>
 
         <!-- Section to display news -->
@@ -239,7 +254,7 @@
           <!-- Content -->
           <div class="row mb-3">
             <div class="col">
-              <p id="expandedPostContent"></p>
+              <p id="expandedPostContent" class="text-muted"></p>
             </div>
           </div>
           <!-- Likes and Dislikes -->
@@ -257,7 +272,7 @@
       </section>
       <footer>
         <p>
-          Copyright © 2014 Source X - All Rights Reserved | design by
+          Copyright © 2024 Yiniz - All Rights Reserved | design by
           <a target="_blank" rel="nofollow noopener" href="//yiniz.com"
             >Yiniz.com</a
           >
