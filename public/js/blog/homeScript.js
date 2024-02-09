@@ -51,6 +51,10 @@ function expandPost(postId) {
       document.getElementById("expandedPostCategory").textContent =
         post.category;
       document.getElementById("expandedPostTitle").textContent = post.title;
+      document.getElementById("expandedPostPublisher").textContent =
+        "Published by: " + post.blogger_username;
+      document.getElementById("expandedPostDate").textContent =
+        "on " + new Date(post.updated_at).toLocaleDateString("en-US");
       document.getElementById("expandedPostContent").textContent = post.content;
       document.getElementById("expandedPostLikes").textContent = post.likes;
       document.getElementById("expandedPostDislikes").textContent =
