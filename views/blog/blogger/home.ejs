@@ -1,4 +1,3 @@
-<!-- views/blogger.ejs -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,35 +8,119 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../../../css/blog/style.css" />
+    <link rel="stylesheet" href="/css/blog/style.css" />
+    <!-- Include animate.css -->
+    <link rel="stylesheet" href="/css/animate.css" />
   </head>
-  <body>
+  <body style="background-color: #f0f5f9">
     <div class="container mt-5">
       <div class="row">
         <div class="col-md-8">
           <h1 class="mb-4">Welcome, <%= currentUser.username %>!</h1>
           <p><%= greeting %></p>
-          <!-- Add more content here as needed -->
-
           <!-- Section to display posts -->
           <h2 class="mt-5">Your Posts</h2>
-          <ul class="list-group">
+          <div class="row row-cols-1 row-cols-md-2 g-4" id="Cards">
             <% posts.forEach(post => { %>
-            <li class="list-group-item">
-              <h4><%= post.title %></h4>
-              <p><%= post.content %></p>
-              <!-- Add publish, edit, delete buttons as needed -->
-            </li>
+            <div class="col">
+              <div class="card row">
+                <img
+                  src="/uploads/<%= post.image %>"
+                  class="card-img-top col"
+                  alt="Post Image"
+                />
+                <div class="card-body row">
+                  <h5 class="card-title col"><%= post.title %></h5>
+                  <p class="card-text col">
+                    <strong>Last Updated:</strong> <%= new
+                    Date(post.updated_at).toLocaleDateString('en-US') %>
+                  </p>
+                  <!-- Display updated_at date -->
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div class="row">
+                      <span class="me-3 col"> 👍🏽 <%= post.likes %> </span>
+                      <span class="col"> 👎🏽 <%= post.dislikes %> </span>
+                    </div>
+                    <button
+                      class="btn btn-primary"
+                      onclick="expandPost('<%= post.id %>')"
+                    >
+                      Read
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <% }); %>
-          </ul>
-        </div>
+          </div>
 
+          <!-- Expanded post view -->
+          <div
+            id="expandedPost"
+            class="animate__animated"
+            style="display: none"
+          >
+            <!-- Back button to toggle the cards back again -->
+            <div class="row mb-3">
+              <div class="col">
+                <button class="btn btn-secondary" onclick="toggleBack()">
+                  Back
+                </button>
+              </div>
+            </div>
+            <!-- Post Image and Category -->
+            <div class="row mb-3">
+              <div class="col">
+                <img
+                  id="expandedPostImage"
+                  class="img-fluid rounded"
+                  alt="Post Image"
+                />
+                <p class="text-end">
+                  <strong>Category:</strong>
+                  <span id="expandedPostCategory"></span>
+                </p>
+              </div>
+            </div>
+            <!-- Title -->
+            <div class="row mb-3">
+              <div class="col">
+                <h2 id="expandedPostTitle"></h2>
+              </div>
+            </div>
+            <!-- Content -->
+            <div class="row mb-3">
+              <div class="col">
+                <p id="expandedPostContent"></p>
+              </div>
+            </div>
+            <!-- Likes and Dislikes -->
+            <div class="row mb-3">
+              <div class="col">
+                <p>
+                  <span class="mr-2"
+                    >👍 <span id="expandedPostLikes"></span
+                  ></span>
+                  <span>👎 <span id="expandedPostDislikes"></span></span>
+                </p>
+              </div>
+            </div>
+            <!-- Edit and Delete buttons -->
+            <div class="row">
+              <div class="col">
+                <button class="btn btn-primary me-2">Edit</button>
+                <button class="btn btn-danger">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="col-md-4">
           <!-- Logout button -->
           <a href="/admin/blog/blogger/logout" class="btn btn-danger mt-3"
             >Log out</a
           >
-
           <!-- New Post button -->
           <a href="/admin/blog/blogger/new-post" class="btn btn-primary mt-3"
             >New Post</a
@@ -45,13 +128,12 @@
         </div>
       </div>
     </div>
-
     <!-- Footer -->
     <footer class="mt-5 bg-dark text-light text-center py-3">
       <p>Yiniz-blogger &copy; <%= currentYear %></p>
       <p><a href="#!" class="text-light">Terms of Service</a></p>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/blog/homeScript.js"></script>
   </body>
 </html>

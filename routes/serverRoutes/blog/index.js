@@ -1,36 +1,26 @@
-// Import necessary modules
 const express = require("express");
 const router = express.Router();
-const checkBloggerValidator = require("../../../middlewares/checkBloggerValidator");
-const bloggerModel = require("../../../models/bloggerModel");
 const blogController = require("../../../controllers/blogController");
-const uploadFile = require("../../../helpers/uploadFile");
+const bloggerModel = require("../../../models/bloggerModel");
 
-// Your route definitions go here
-
-router.get("/home", async (req, res) => {
+// Update the render function in the home
+router.get("/home", blogController.isAuthenticated, async (req, res) => {
   try {
-    // Ensure username is defined in the session
-    if (!req.session.username) {
-      throw new Error("Blogger username is not defined in session");
-    }
-
     const username = req.session.username;
+    console.log("Username:", username); // Log the username
 
-    // Fetch blogger information and posts using session for blogger username
+    // Fetch blogger information by username
     const blogger = await bloggerModel.getBloggerByUsername(username);
+    console.log("Blogger:", blogger); // Log the blogger data
+
+    // Fetch blogger posts by username
     const bloggerPosts = await bloggerModel.getBloggerPostsByUsername(username);
+    console.log("Blogger Posts:", bloggerPosts); // Log the blogger posts
 
-    // Get the current hour
     const currentTime = new Date().getHours();
-
-    // Get the greeting based on the current time
     const greeting = getGreeting(currentTime);
 
-    console.log("Blogger Data:", blogger);
-    console.log("Blogger Posts:", bloggerPosts);
-
-    res.render("blog/blogger/home", {
+    return res.render("blog/blogger/home", {
       currentUser: blogger,
       greeting,
       posts: bloggerPosts,
@@ -39,14 +29,11 @@ router.get("/home", async (req, res) => {
   } catch (error) {
     console.error("Error fetching blogger data:", error);
     req.flash("error", "An error occurred while loading the blogger page");
-    res.redirect("/admin/blog/blogger/login");
+    return res.redirect("/admin/blog/blogger/login");
   }
 });
 
-// Define the getGreeting function
 const getGreeting = (currentTime) => {
-  // Define your greeting logic here based on the current time
-  // For example:
   if (currentTime < 12) {
     return "Good morning!";
   } else if (currentTime < 18) {
@@ -57,105 +44,49 @@ const getGreeting = (currentTime) => {
 };
 
 router.get("/login", (req, res) => {
-  res.render("blog/blogger/login", { flashMessages: req.flash("error") });
+  return res.render("blog/blogger/login", {
+    flashMessages: req.flash("error"),
+  });
 });
 
-router.post(
-  "/login",
-  checkBloggerValidator.loginValidators,
-  checkBloggerValidator.validate,
-  async (req, res, next) => {
-    try {
-      console.log("Login Request Body:", req.body);
+router.post("/login", blogController.login);
 
-      // Call the login controller method and await its result
-      const blogger = await blogController.login(req, res);
-      console.log("Blogger is:", blogger);
-
-      // Check if the blogger object exists and has the username property
-      if (blogger && blogger.username) {
-        // If login is successful, store the username in the session
-        req.session.username = blogger.username;
-        console.log("stored sucessfully");
-
-        console.log("now redirecting....");
-
-        // Redirect to blogger home page after successful login
-        return res.redirect("/admin/blog/blogger/home");
-      } else {
-        // If login fails, redirect to login page with an error message
-        req.flash("error", "Incorrect username or password");
-        return res.redirect("/admin/blog/blogger/login");
-      }
-    } catch (error) {
-      console.error("Error during login:", error);
-      req.flash("error", "An error occurred during login");
-      return res.redirect("/admin/blog/blogger/login");
-    }
-  }
-);
-
-// Signup route
 router.get("/signup", (req, res) => {
-  res.render("blog/blogger/signup", { flashMessages: req.flash("error") });
+  return res.render("blog/blogger/signup", {
+    flashMessages: req.flash("error"),
+  });
+});
+
+router.post("/signup", blogController.signup);
+
+router.get("/new-post", blogController.isAuthenticated, (req, res) => {
+  // Get the session data
+  const currentUser = req.session.username;
+
+  // Render the new post page
+  return res.render("blog/blogger/new-post", {
+    currentUser,
+    currentYear: new Date().getFullYear(),
+  });
 });
 
 router.post(
-  "/signup",
-  checkBloggerValidator.signupValidators,
-  checkBloggerValidator.validate,
-  async (req, res, next) => {
-    try {
-      console.log("Signup Request Body:", req.body);
-
-      // Call the signup controller method
-      await blogController.signup(req, res); // Call the signup function
-
-      // If signup is successful, store the username in the session
-      req.session.username = req.body.username; // Assuming the username is available in the request body
-
-      // Redirect to blogger home page after successful signup
-      res.redirect("/admin/blog/blogger/home");
-    } catch (error) {
-      console.error("Error during signup:", error);
-      req.flash("error", "An error occurred during signup");
-      res.redirect("/admin/blog/blogger/signup");
-    }
-  }
+  "/new-post",
+  blogController.isAuthenticated,
+  blogController.createPost
 );
 
-// Define route for rendering the new post form
-router.get("/new-post", blogController.isAuthenticated, (req, res) => {
-  res.render("blog/blogger/new-post", {
-    currentYear: new Date().getFullYear(),
-  }); // Pass currentYear to the view
-});
-
-// Define route for handling submission of new post form
-router.post("/new-post", blogController.isAuthenticated, async (req, res) => {
+// Define a route to fetch a post by its ID
+router.get("/posts/:postId", async (req, res) => {
   try {
-    const bloggerUsername = req.session.username; // Get blogger username from session
-    const { title, content } = req.body; // Get post data from request body
-    let image;
-
-    // Check if an image file was uploaded
-    if (req.files && req.files.image) {
-      image = req.files.image; // Get the uploaded image file
-    } else {
-      // If no image was uploaded, redirect with an error message
-      req.flash("error", "Please upload an image");
-      return res.redirect("/admin/blog/blogger/new-post");
-    }
-
-    // Call the controller method to create a new post and upload the image
-    await blogController.createPost(bloggerUsername, title, content, image);
-
-    // Redirect to blogger home page after post creation
-    res.redirect("/admin/blog/blogger/home");
+    const postId = req.params.postId;
+    const post = await bloggerModel.getPostById(postId);
+    return res.json(post);
   } catch (error) {
-    console.error("Error creating new post:", error);
-    req.flash("error", "An error occurred while creating the post");
-    res.redirect("/admin/blog/blogger/home");
+    console.error("Error fetching post by ID:", error);
+    return res
+      .status(500)
+      .json({ error: "An error occurred while fetching the post" });
   }
 });
 

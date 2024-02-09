@@ -25,10 +25,21 @@ const getBloggerByUsername = async (username) => {
 const getBloggerPostsByUsername = async (username) => {
   // Fetch blogger posts from the database
   const [rows] = await db.query(
-    "SELECT * FROM yiniz_bloggerposts WHERE blogger_username = ?",
+    "SELECT bp.* FROM yiniz_bloggerposts bp WHERE bp.blogger_username = ?",
     [username]
   );
   return rows; // Return all rows
+};
+
+// Fetch all posts
+const getAllPosts = async () => {
+  try {
+    // Query the database to fetch all posts
+    const [rows] = await db.query("SELECT * FROM yiniz_bloggerposts");
+    return rows; // Return all rows
+  } catch (error) {
+    throw new Error("Error fetching all posts: " + error.message);
+  }
 };
 
 // Fetch blogger ID by username
@@ -39,6 +50,16 @@ const getBloggerIdByUsername = async (username) => {
     [username]
   );
   return rows[0].id; // Return the ID of the blogger
+};
+
+// Fetch post by ID
+const getPostById = async (postId) => {
+  // Fetch post from the database using post ID
+  const [rows] = await db.query(
+    "SELECT * FROM yiniz_bloggerposts WHERE id = ?",
+    [postId]
+  );
+  return rows[0]; // Return the first row (assuming only one post per ID)
 };
 
 // Create a new user
@@ -57,12 +78,12 @@ const createUser = async (username, password, country, dob) => {
 };
 
 // Create a new post
-const createPost = async (bloggerUsername, title, content, image) => {
+const createPost = async (bloggerUsername, title, content, image, category) => {
   try {
     // Insert new post into the database
     const result = await db.query(
-      "INSERT INTO yiniz_bloggerposts (blogger_username, title, content, image) VALUES (?, ?, ?, ?)",
-      [bloggerUsername, title, content, image]
+      "INSERT INTO yiniz_bloggerposts (blogger_username, title, content, image, category) VALUES (?, ?, ?, ?, ?)",
+      [bloggerUsername, title, content, image, category]
     );
 
     return result.insertId; // Return the ID of the newly created post
@@ -77,6 +98,8 @@ module.exports = {
   getBloggerByUsername,
   getBloggerPostsByUsername,
   getBloggerIdByUsername,
+  getPostById,
   createUser,
   createPost,
+  getAllPosts,
 };

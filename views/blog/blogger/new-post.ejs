@@ -41,6 +41,24 @@
               ></textarea>
             </div>
             <div class="mb-3">
+              <label for="category" class="form-label">Category</label>
+              <select
+                class="form-select"
+                id="category"
+                name="category"
+                required
+              >
+                <option value="" selected disabled>Select category...</option>
+                <option value="politics">Politics</option>
+                <option value="sports">Sports</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="fashion">Fashion</option>
+                <option value="tech">Tech</option>
+                <option value="education">Education</option>
+                <option value="opinion">Opinion</option>
+              </select>
+            </div>
+            <div class="mb-3">
               <label for="image" class="form-label">Image</label>
               <input
                 type="file"

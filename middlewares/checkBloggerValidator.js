@@ -30,6 +30,6 @@ exports.validate = (req, res, next) => {
   } else {
     const errorMessages = errors.array().map((error) => error.msg);
     req.flash("error", errorMessages);
-    res.redirect("back");
+    return res.redirect("back");
   }
 };

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blogger | Login</title>
+    <title>Blogger | Sign Up</title>
 
     <!-- Add your CSS stylesheets or include Bootstrap if needed -->
     <link
@@ -29,7 +29,7 @@
                 <div class="col-md-6 col-lg-5 d-none d-md-block">
                   <img
                     src="/images/News-insight.jpg"
-                    alt="login form"
+                    alt="signup form"
                     class="img-fluid"
                     style="border-radius: 1rem 0 0 1rem"
                   />
@@ -37,81 +37,7 @@
                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                   <div class="card-body p-4 p-lg-5 text-black">
                     <form
-                      id="loginForm"
-                      class="animate__animated animate__fadeIn"
-                      action="/admin/blog/blogger/login"
-                      method="post"
-                    >
-                      <div class="d-flex align-items-center mb-3 pb-1">
-                        <i
-                          class="fas fa-cubes fa-2x me-3"
-                          style="color: #ff6219"
-                        ></i>
-                        <span class="h3 fw-bold mb-3"
-                          ><span class="text-primary">Yiniz</span> |
-                          <span class="text-danger">Blogger</span></span
-                        >
-                      </div>
-
-                      <h5
-                        class="fw-normal mb-3 pb-3"
-                        style="letter-spacing: 1px"
-                      >
-                        Sign into your account
-                      </h5>
-
-                      <div class="form-outline mb-4">
-                        <input
-                          type="text"
-                          id="username"
-                          name="loginUsername"
-                          class="form-control form-control-lg"
-                          placeholder="Username"
-                        />
-                        <label class="form-label" for="username"
-                          >Username</label
-                        >
-                      </div>
-
-                      <div class="form-outline mb-4">
-                        <input
-                          type="password"
-                          id="password"
-                          name="loginPassword"
-                          class="form-control form-control-lg"
-                          placeholder="Password"
-                        />
-                        <label class="form-label" for="password"
-                          >Password</label
-                        >
-                      </div>
-
-                      <div class="pt-1 mb-4">
-                        <button
-                          class="btn btn-primary btn-lg btn-block"
-                          type="submit"
-                        >
-                          Login
-                        </button>
-                      </div>
-
-                      <!-- <a class="small text-muted" href="#">Forgot password?</a>
-                      <p class="mb-5 pb-lg-2" style="color: #393f81">
-                        Don't have an account?
-                        <a
-                          href="#"
-                          onclick="toggleForm('registerForm')"
-                          style="color: #393f81"
-                          >Register here</a
-                        >
-                      </p> -->
-                      <a href="#!" class="small text-muted">Terms of use.</a>
-                      <a href="#!" class="small text-muted">Privacy policy</a>
-                    </form>
-
-                    <form
                       id="registerForm"
-                      style="display: none"
                       class="animate__animated animate__fadeIn"
                       action="/admin/blog/blogger/signup"
                       method="post"

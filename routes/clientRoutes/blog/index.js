@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const blogController = require("../../../controllers/blogController");
 
-router.get("/", (req, res) => {
-  res.render("blog/index");
-});
+// Route to display all posts
+router.get("/", blogController.getAllPostsPage);
 
 module.exports = router;

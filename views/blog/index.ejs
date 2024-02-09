@@ -3,105 +3,260 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yiniz-blog</title>
-    <!-- Bootstrap CSS -->
+    <title>Yiniz-Blog</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="/css/blog/style.css" />
+    <link rel="stylesheet" href="/css/animate.css" />
     <style>
+      /* Add custom styles here */
       body {
-        font-family: "Arial", sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: royalblue; /* Royal Blue */
+        background-color: #000; /* Black background */
+        color: #fff; /* White text */
       }
 
-      header {
-        background-color: #333;
-        color: #fff;
-        padding: 10px;
-        text-align: center;
+      .carousel-item img {
+        width: 100%;
+        height: 400px; /* Adjust height as needed */
+        object-fit: cover;
       }
 
-      nav {
-        background-color: #000; /* Black */
-        padding: 10px;
-        text-align: center;
+      .carousel-caption {
+        text-align: left;
       }
 
-      nav a {
-        color: #fff;
+      .carousel-caption h5 {
+        color: #3a5ca2; /* Royal blue color */
+      }
+
+      .card {
+        background-color: #000; /* Black background for cards */
+        border: 1px solid #3a5ca2; /* Royal blue border */
+        color: #fff; /* White text */
+        margin-bottom: 20px;
+      }
+
+      a {
         text-decoration: none;
-        margin: 0 15px;
+        color: white;
         font-weight: bold;
       }
 
-      section {
-        max-width: 800px;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-
-      footer {
-        background-color: #333;
-        color: #fff;
-        text-align: center;
-        padding: 10px;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
+      li {
+        list-style: none;
       }
     </style>
-    <%- include('../ads.ejs') %>
   </head>
   <body>
-    <header>
-      <h1>Yiniz-blog</h1>
-      <p>Welcome to your blogging journey</p>
-    </header>
-
-    <nav class="navbar navbar-expand-lg navbar-dark bg-">
-      <div class="container">
-        <a class="navbar-brand" href="#">Home</a>
-        <a class="navbar-brand" href="admin/blog/blogger/login"
-          >Be a blogger here!</a
-        >
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Categories</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="admin/blog/blogger/login"
-                >Be a blogger here!</a
-              >
-            </li>
-          </ul>
+    <div id="wrapper">
+      <header>
+        <div id="logo">
+          <h1></h1>
+          <div id="tagline">
+            <h2 class="text-primary p-2">Yiniz-Blog!</h2>
+          </div>
         </div>
-      </div>
-    </nav>
+        <nav>
+          <ul class="row p-3 justify-content-center align-items-center">
+            <li class="col"><a href="/blog" id="homenav">Home</a></li>
+            <div class="container mt-3 col">
+              <div class="col">
+                <div class="col-md-6">
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-dark dropdown-toggle"
+                      type="button"
+                      id="categoryDropdown"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Categories
+                    </button>
+                    <ul
+                      class="dropdown-menu"
+                      aria-labelledby="categoryDropdown"
+                    >
+                      <li><a class="dropdown-item" href="#">Politics</a></li>
+                      <li><a class="dropdown-item" href="#">Sports</a></li>
+                      <li>
+                        <a class="dropdown-item" href="#">Entertainment</a>
+                      </li>
+                      <li><a class="dropdown-item" href="#">Fashion</a></li>
+                      <li><a class="dropdown-item" href="#">Tech</a></li>
+                      <li><a class="dropdown-item" href="#">Education</a></li>
+                      <li><a class="dropdown-item" href="#">Opinion</a></li>
+                      <li><a class="dropdown-item" href="#">Law</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <li class="col"><a href="#" id="aboutnav">About</a></li>
+          </ul>
+        </nav>
+      </header>
+      <section>
+        <!-- Bootstrap Carousel -->
+        <div
+          id="carouselExampleIndicators Cards"
+          class="carousel slide mt-4"
+          data-bs-ride="carousel"
+        >
+          <div class="carousel-indicators">
+            <% posts.forEach((post, index) => { %>
+            <button
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide-to="<%= index %>"
+              class="<%= index === 0 ? 'active' : '' %>"
+              aria-current="<%= index === 0 ? 'true' : 'false' %>"
+              aria-label="Slide <%= index + 1 %>"
+            ></button>
+            <% }) %>
+          </div>
+          <div class="carousel-inner">
+            <% posts.forEach((post, index) => { %>
+            <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+              <img
+                src="/uploads/<%= post.image %>"
+                class="d-block w-100"
+                alt="News Image"
+                onclick="expandPost('<%= post.id %>')"
+              />
+              <div class="carousel-caption d-none d-md-block bg-dark w-100">
+                <h5 class="text-center"><%= post.title %></h5>
+                <p class="text-center">
+                  Published by: <%= post.blogger_username %>
+                </p>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
 
-    <section class="vh-100" style="background-color: white; color: black">
-      <!-- Your login form content goes here -->
-    </section>
+        <!-- Section to display news -->
+        <div class="container mt-5" id="Cards">
+          <div class="row">
+            <% posts.forEach((post, index) => { %>
+            <div class="col-md-6">
+              <div class="card">
+                <img
+                  src="/uploads/<%= post.image %>"
+                  class="card-img-top"
+                  alt="News Image"
+                />
+                <div class="card-body">
+                  <h5 class="card-title"><%= post.title %></h5>
+                  <p class="card-text">
+                    Published by: <%= post.blogger_username %>
+                  </p>
+                  <p class="card-text">
+                    Published on: <%= new
+                    Date(post.updated_at).toLocaleDateString('en-US') %>
+                  </p>
+                  <a
+                    href="#"
+                    class="btn btn-primary"
+                    onclick="expandPost('<%= post.id %>')"
+                    >Read More</a
+                  >
+                </div>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
 
-    <footer>&copy; 2024 Yiniz-blog. All rights reserved.</footer>
-
-    <!-- Bootstrap JS and Popper.js (required for Bootstrap components) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <div
+          id="expandedPost"
+          class="animate__animated"
+          style="
+            display: none;
+            background-color: #fff;
+            color: #000;
+            padding: 20px;
+            border-radius: 10px;
+          "
+        >
+          <!-- Back button to toggle the cards back again -->
+          <div class="row mb-3">
+            <div class="col">
+              <button class="btn btn-secondary" onclick="toggleBack()">
+                Back
+              </button>
+            </div>
+          </div>
+          <!-- Post Image and Category -->
+          <div class="row mb-3">
+            <div class="col">
+              <img
+                id="expandedPostImage"
+                class="img-fluid rounded"
+                alt="Post Image"
+                style="max-height: 300px; object-fit: cover"
+              />
+              <p class="text-end">
+                <strong>Category:</strong>
+                <span id="expandedPostCategory"></span>
+              </p>
+            </div>
+          </div>
+          <!-- Title -->
+          <div class="row mb-3">
+            <div class="col">
+              <h2 id="expandedPostTitle"></h2>
+            </div>
+          </div>
+          <!-- Content -->
+          <div class="row mb-3">
+            <div class="col">
+              <p id="expandedPostContent"></p>
+            </div>
+          </div>
+          <!-- Likes and Dislikes -->
+          <div class="row mb-3">
+            <div class="col">
+              <p>
+                <span class="mr-2"
+                  >👍 <span id="expandedPostLikes"></span
+                ></span>
+                <span>👎 <span id="expandedPostDislikes"></span></span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <footer>
+        <p>
+          Copyright © 2014 Source X - All Rights Reserved | design by
+          <a target="_blank" rel="nofollow noopener" href="//yiniz.com"
+            >Yiniz.com</a
+          >
+        </p>
+      </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="/js/blog/homeScript.js"></script>
   </body>
 </html>

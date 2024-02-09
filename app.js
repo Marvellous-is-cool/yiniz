@@ -1,33 +1,58 @@
 const express = require("express");
-const fileUpload = require("express-fileupload"); // Require express-fileupload module
-const sessionManager = require("./middlewares/sessionManager");
-const flash = require("./middlewares/flash");
-// const helmet = require("helmet");
+const fileUpload = require("express-fileupload");
+const session = require("express-session");
+const MySQLStore = require("express-mysql-session")(session);
+const crypto = require("crypto");
 const dotenv = require("dotenv");
+const connection = require("./models/connection");
+const flashMiddleware = require("./middlewares/flash"); // Import flash middleware
 
 dotenv.config();
 
+// Import routes
+const clientRoutes = require("./routes/clientRoutes/index");
+const authRoutes = require("./routes/serverRoutes/index");
+
 const app = express();
 
-// Set up session manager
-app.use(sessionManager);
+// Session configuration
+const sessionSecret =
+  process.env.SESSION_SECRET || crypto.randomBytes(20).toString("hex");
 
-// Set up flash messages
-app.use(flash);
+const sessionStore = new MySQLStore(
+  {
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    port: process.env.MYSQL_PORT || 3306,
+    clearExpired: true,
+    checkExpirationInterval: 15 * 60 * 1000,
+  },
+  connection
+);
 
-// // Set up Helmet for security headers
-// app.use(helmet());
+const sessionConfig = {
+  secret: sessionSecret,
+  store: sessionStore,
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    // secure: process.env.NODE_ENV === "development" ? false : true,
+    secure: false,
+  },
+  resave: false,
+  saveUninitialized: false,
+};
+// Set up session middleware
+app.use(session(sessionConfig));
+
+// Set up flash middleware
+app.use(flashMiddleware);
 
 // Set EJS as the view engine
 app.set("view engine", "ejs");
 app.set("views", "views");
-
-// Middleware to pass flash messages to views
-app.use((req, res, next) => {
-  res.locals.flashMessages = req.session.flashMessages;
-  req.session.flashMessages = null;
-  next();
-});
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -35,18 +60,19 @@ app.use(express.json());
 // Serve static files from the 'public' directory
 app.use(express.static("public"));
 
+// Serve static files from the 'uploads' directory
+app.use("/uploads", express.static("uploads"));
+
 // Configure file upload middleware
 app.use(
   fileUpload({
-    createParentPath: true, // Ensure the parent directory exists
-    tempFileDir: "/temp", // Set temporary directory for file uploads
+    createParentPath: true,
+    tempFileDir: "/temp",
   })
 );
 
 // Define routes
-app.use("/", require("./routes/clientRoutes/index"));
-
-const authRoutes = require("./routes/serverRoutes/index");
+app.use("/", clientRoutes);
 app.use("/admin", authRoutes);
 
 // Start the server

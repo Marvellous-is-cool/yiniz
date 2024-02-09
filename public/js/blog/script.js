@@ -1,86 +1,81 @@
-function toggleForm(formId) {
-  document.getElementById("loginForm").style.display =
-    formId === "loginForm" ? "block" : "none";
-  document.getElementById("registerForm").style.display =
-    formId === "registerForm" ? "block" : "none";
-}
-
-function login() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  if (!username || !password) {
-    alert("Please fill in all fields");
-    return;
-  }
-
-  // Make a POST request to the login route
-  fetch("/admin/blog/blogger/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ loginUsername: username, loginPassword: password }), // Send username and password in request body
-  })
-    .then((response) => {
-      if (response.ok) {
-        // If login is successful, redirect to the blogger home page
-        window.location.href = "/admin/blog/blogger/home";
-      } else {
-        // If there's an error, display an alert message
-        throw new Error("Login failed");
-      }
-    })
-    .catch((error) => {
-      console.error("Error during login:", error);
-      alert("Invalid username or password");
-    });
-}
-
 function register() {
-  // Prevent default form submission
-  event.preventDefault();
+  var regUsername = document.getElementById("regUsername").value;
+  var country = document.getElementById("country").value;
+  var dob = document.getElementById("dob").value;
+  var regPassword = document.getElementById("regPassword").value;
+  var confirmPassword = document.getElementById("confirmPassword").value;
 
-  const regUsername = document.getElementById("regUsername").value;
-  const country = document.getElementById("country").value;
-  const dob = document.getElementById("dob").value;
-  const regPassword = document.getElementById("regPassword").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
+  console.log("Registration initiated...");
 
-  // Add client-side validation for registration fields
-  if (!regUsername || !country || !dob || !regPassword || !confirmPassword) {
-    alert("Please fill in all fields");
+  // Check if passwords match
+  if (regPassword !== confirmPassword) {
+    document.getElementById("registerError").innerText =
+      "Passwords do not match";
+    console.error("Passwords do not match");
     return;
   }
 
-  // Construct a JavaScript object with the form data
-  const formData = {
-    regUsername,
-    country,
-    dob,
-    regPassword,
-    confirmPassword,
-  };
+  console.log("Sending registration request...");
 
-  // Make a POST request to the signup route
   fetch("/admin/blog/blogger/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(formData),
+    body: JSON.stringify({
+      regUsername: regUsername,
+      country: country,
+      dob: dob,
+      regPassword: regPassword,
+    }),
   })
     .then((response) => {
+      console.log("Received response from server:", response);
       if (response.ok) {
-        // If signup is successful, redirect to the blogger home page
+        console.log("Registration successful. Redirecting...");
         window.location.href = "/admin/blog/blogger/home";
       } else {
-        // If there's an error, display an alert message
-        throw new Error("Signup failed");
+        console.error("Failed to sign up. Please try again later.");
+        document.getElementById("registerError").innerText =
+          "Failed to sign up. Please try again later.";
       }
     })
     .catch((error) => {
-      console.error("Error during signup:", error);
-      alert("An error occurred during signup");
+      console.error("Error:", error);
     });
+}
+
+function login() {
+  var loginUsername = document.getElementById("username").value;
+  var loginPassword = document.getElementById("password").value;
+
+  fetch("/admin/blog/blogger/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      loginUsername: loginUsername,
+      loginPassword: loginPassword,
+    }),
+  })
+    .then((response) => {
+      if (response.ok) {
+        window.location.href = "/admin/blog/blogger/home";
+      } else {
+        document.getElementById("loginError").innerText =
+          "Invalid username or password";
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+// Preserve existing toggleForm function
+function toggleForm(formId) {
+  document.getElementById(formId).style.display = "block";
+  document.getElementById(
+    formId === "loginForm" ? "registerForm" : "loginForm"
+  ).style.display = "none";
 }
