@@ -62,27 +62,31 @@ const getPostById = async (postId) => {
   return rows[0]; // Return the first row (assuming only one post per ID)
 };
 
-// Update the likes count for a post
-const likePost = async (postId) => {
+exports.likePost = async (req, res) => {
   try {
-    await db.query(
-      "UPDATE yiniz_bloggerposts SET likes = likes + 1 WHERE id = ?",
-      [postId]
-    );
+    const postId = req.params.postId;
+    await bloggerModel.likePost(postId);
+    const updatedPost = await bloggerModel.getPostById(postId); // Fetch the updated post data
+    res.json(updatedPost); // Send the updated post data in the response
+    console.log("BLOG CONTROLLER: liked updated");
   } catch (error) {
-    throw new Error("Error liking post: " + error.message);
+    console.error("Error liking post:", error);
+    res.status(500).json({ error: "An error occurred while liking the post" });
   }
 };
 
-// Update the dislikes count for a post
-const dislikePost = async (postId) => {
+exports.dislikePost = async (req, res) => {
   try {
-    await db.query(
-      "UPDATE yiniz_bloggerposts SET dislikes = dislikes + 1 WHERE id = ?",
-      [postId]
-    );
+    const postId = req.params.postId;
+    await bloggerModel.dislikePost(postId);
+    const updatedPost = await bloggerModel.getPostById(postId); // Fetch the updated post data
+    res.json(updatedPost); // Send the updated post data in the response
+    console.log("BLOG CONTROLLER: dislike updated");
   } catch (error) {
-    throw new Error("Error disliking post: " + error.message);
+    console.error("Error disliking post:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while disliking the post" });
   }
 };
 
