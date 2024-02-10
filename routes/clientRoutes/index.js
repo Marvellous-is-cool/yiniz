@@ -28,7 +28,7 @@ router.get("/", (req, res) => {
     {
       title: "Edu-Tech",
       content: "Unlock knowledge and learning opportunities.",
-      link: "/edutech",
+      link: "/edu",
     },
   ];
 
@@ -45,6 +45,6 @@ router.use("/blog", blogRouter);
 router.use("/games", gamesRouter);
 
 // Edutech Route
-router.use("/edutech", edutechRouter);
+router.use("/edu", edutechRouter);
 
 module.exports = router;

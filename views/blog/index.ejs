@@ -134,9 +134,7 @@
               />
               <div class="carousel-caption bg-dark w-100">
                 <h5 class="text-center"><%= post.title %></h5>
-                <p class="text-center">
-                  Published by: <%= post.blogger_username %>
-                </p>
+                <p class="text-center text-danger">Admin</p>
               </div>
             </div>
             <% }) %>
@@ -180,15 +178,12 @@
                   class="card-img-top"
                   alt="News Image"
                 />
-                <div class="card-body">
+                <div
+                  class="card-body"
+                  style="display: flex; flex-direction: column"
+                >
                   <h5 class="card-title"><%= post.title %></h5>
-                  <p class="card-text">
-                    Published by: <%= post.blogger_username %>
-                  </p>
-                  <p class="card-text">
-                    Published on: <%= new
-                    Date(post.updated_at).toLocaleDateString('en-US') %>
-                  </p>
+                  <span class="card-text text-danger">Admin</span>
                   <a
                     href="#"
                     class="btn btn-primary"
@@ -240,14 +235,14 @@
           <div class="row mb-3">
             <div class="col">
               <h2 id="expandedPostTitle"></h2>
+              <span id="expandedPostPublisher"></span>
             </div>
           </div>
 
           <!-- Publisher & date -->
           <div class="row mb-3">
             <div class="col">
-              <h2 id="expandedPostPublisher"></h2>
-              <b id="expandedPostDate"></b>
+              <p class="card-text text-danger">Admin</p>
             </div>
           </div>
 
@@ -261,17 +256,27 @@
           <div class="row mb-3">
             <div class="col">
               <p>
-                <span class="mr-2"
-                  >👍 <span id="expandedPostLikes"></span
-                ></span>
-                <span>👎 <span id="expandedPostDislikes"></span></span>
+                <button
+                  id="likeButton"
+                  class="btn border-rounded btn-success mr-2"
+                  onclick="likePost()"
+                >
+                  👍 <span id="expandedPostLikes"></span>
+                </button>
+                <button
+                  id="dislikeButton"
+                  class="btn border-rounded btn-danger"
+                  onclick="dislikePost()"
+                >
+                  👎 <span id="expandedPostDislikes"></span>
+                </button>
               </p>
             </div>
           </div>
         </div>
       </section>
       <footer>
-        <p>
+        <p class="p-3 text-center">
           Copyright © 2024 Yiniz - All Rights Reserved | design by
           <a target="_blank" rel="nofollow noopener" href="//yiniz.com"
             >Yiniz.com</a

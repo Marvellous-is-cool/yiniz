@@ -68,6 +68,56 @@ exports.getAllPostsPage = async (req, res) => {
   }
 };
 
+exports.likePost = async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    // const clientIP = req.ip; // Access the client's IP address from the request object
+
+    // Ensure that req.session.ip is initialized as an object
+    req.session.ip = req.session.ip || {};
+
+    // Check if the IP address has already liked this post
+    // if (req.session.ip[clientIP]) {
+    //   return res
+    //     .status(400)
+    //     .json({ error: "You have already liked this post" });
+    // }
+    await bloggerModel.likePost(postId);
+    // req.session.ip[clientIP] = true; // Store the IP address as having performed the action
+    res.json({ success: true });
+    console.log("BLOG CONTROLLER: liked updated");
+  } catch (error) {
+    console.error("Error liking post:", error);
+    res.status(500).json({ error: "An error occurred while liking the post" });
+  }
+};
+
+exports.dislikePost = async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    // const clientIP = req.ip; // Access the client's IP address from the request object
+
+    // Ensure that req.session.ip is initialized as an object
+    req.session.ip = req.session.ip || {};
+
+    // Check if the IP address has already disliked this post
+    // if (req.session.ip[clientIP]) {
+    //   return res
+    //     .status(400)
+    //     .json({ error: "You have already disliked this post" });
+    // }
+    await bloggerModel.dislikePost(postId);
+    // req.session.ip[clientIP] = true; // Store the IP address as having performed the action
+    res.json({ success: true });
+    console.log("BLOG CONTROLLER: dislike updated");
+  } catch (error) {
+    console.error("Error disliking post:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while disliking the post" });
+  }
+};
+
 // Login logic
 exports.login = async (req, res) => {
   try {

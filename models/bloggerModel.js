@@ -62,6 +62,30 @@ const getPostById = async (postId) => {
   return rows[0]; // Return the first row (assuming only one post per ID)
 };
 
+// Update the likes count for a post
+const likePost = async (postId) => {
+  try {
+    await db.query(
+      "UPDATE yiniz_bloggerposts SET likes = likes + 1 WHERE id = ?",
+      [postId]
+    );
+  } catch (error) {
+    throw new Error("Error liking post: " + error.message);
+  }
+};
+
+// Update the dislikes count for a post
+const dislikePost = async (postId) => {
+  try {
+    await db.query(
+      "UPDATE yiniz_bloggerposts SET dislikes = dislikes + 1 WHERE id = ?",
+      [postId]
+    );
+  } catch (error) {
+    throw new Error("Error disliking post: " + error.message);
+  }
+};
+
 // Create a new user
 const createUser = async (username, password, country, dob) => {
   try {
@@ -99,6 +123,8 @@ module.exports = {
   getBloggerPostsByUsername,
   getBloggerIdByUsername,
   getPostById,
+  likePost,
+  dislikePost,
   createUser,
   createPost,
   getAllPosts,

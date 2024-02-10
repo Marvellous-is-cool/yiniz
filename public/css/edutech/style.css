@@ -9,6 +9,14 @@ body {
   z-index: 0 !important;
 }
 
+.question-container {
+  display: none;
+}
+
+.question-container.show {
+  display: block;
+}
+
 #main-header,
 #main-header2 {
   position: fixed !important;
