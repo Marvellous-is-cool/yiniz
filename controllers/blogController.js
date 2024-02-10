@@ -5,15 +5,15 @@ const uploadFile = require("../helpers/uploadFile"); // Import the uploadFile he
 // Middleware to check if the user is authenticated
 exports.isAuthenticated = (req, res, next) => {
   if (req.session.username) {
-    console.log("BLOG CONTROLLER: Session found, user saved sucessfully");
+    console.log("BLOG CONTROLLER: Session found, user saved successfully");
     console.log("The session: ", req.session);
-    return next(); // Add return here
+    return next();
   } else {
     // User is not authenticated, redirect to login page
     req.flash("error", "You need to login first");
     console.log("BLOG CONTROLLER: Session not found");
     console.log("The session: ", req.session);
-    return res.redirect("/admin/blog/blogger/login"); // Add return here
+    return res.redirect("/admin/blog/blogger/login");
   }
 };
 
@@ -34,23 +34,23 @@ exports.getBloggerPage = async (req, res) => {
     // Get the greeting based on the current time
     const greeting = getGreeting(currentTime);
 
-    console.log("BLOGCONTROLLER: Blogger Data:", blogger);
-    console.log("BLOGCONTROLLER: Blogger Posts:", bloggerPosts);
+    console.log("BLOG CONTROLLER: Blogger Data:", blogger);
+    console.log("BLOG CONTROLLER: Blogger Posts:", bloggerPosts);
 
     return res.render("blog/blogger/blogger", {
-      // Add return here
       currentUser: blogger,
       greeting,
       posts: bloggerPosts,
       currentYear: new Date().getFullYear(),
     });
   } catch (error) {
-    console.error("BLOGCONTROLLER: Error fetching blogger data:", error);
+    console.error("BLOG CONTROLLER: Error fetching blogger data:", error);
     req.flash("error", "An error occurred while loading the blogger page");
-    return res.redirect("/admin/blog/blogger/login"); // Add return here
+    return res.redirect("/admin/blog/blogger/login");
   }
 };
 
+// Render the page with all posts
 exports.getAllPostsPage = async (req, res) => {
   try {
     // Fetch all posts
@@ -62,56 +62,36 @@ exports.getAllPostsPage = async (req, res) => {
       currentYear: new Date().getFullYear(),
     });
   } catch (error) {
-    console.error("BLOGCONTROLLER: Error fetching all posts:", error);
+    console.error("BLOG CONTROLLER: Error fetching all posts:", error);
     req.flash("error", "An error occurred while loading all posts page");
     return res.redirect("/"); // Redirect to home page or handle the error appropriately
   }
 };
 
+// Like a post
 exports.likePost = async (req, res) => {
   try {
     const postId = req.params.postId;
-    // const clientIP = req.ip; // Access the client's IP address from the request object
-
-    // Ensure that req.session.ip is initialized as an object
-    req.session.ip = req.session.ip || {};
-
-    // Check if the IP address has already liked this post
-    // if (req.session.ip[clientIP]) {
-    //   return res
-    //     .status(400)
-    //     .json({ error: "You have already liked this post" });
-    // }
     await bloggerModel.likePost(postId);
-    // req.session.ip[clientIP] = true; // Store the IP address as having performed the action
-    res.json({ success: true });
-    console.log("BLOG CONTROLLER: liked updated");
+    const updatedPost = await bloggerModel.getPostById(postId);
+    res.json(updatedPost);
+    console.log("BLOG CONTROLLER: Post liked successfully");
   } catch (error) {
-    console.error("Error liking post:", error);
+    console.error("BLOG CONTROLLER: Error liking post:", error);
     res.status(500).json({ error: "An error occurred while liking the post" });
   }
 };
 
+// Dislike a post
 exports.dislikePost = async (req, res) => {
   try {
     const postId = req.params.postId;
-    // const clientIP = req.ip; // Access the client's IP address from the request object
-
-    // Ensure that req.session.ip is initialized as an object
-    req.session.ip = req.session.ip || {};
-
-    // Check if the IP address has already disliked this post
-    // if (req.session.ip[clientIP]) {
-    //   return res
-    //     .status(400)
-    //     .json({ error: "You have already disliked this post" });
-    // }
     await bloggerModel.dislikePost(postId);
-    // req.session.ip[clientIP] = true; // Store the IP address as having performed the action
-    res.json({ success: true });
-    console.log("BLOG CONTROLLER: dislike updated");
+    const updatedPost = await bloggerModel.getPostById(postId);
+    res.json(updatedPost);
+    console.log("BLOG CONTROLLER: Post disliked successfully");
   } catch (error) {
-    console.error("Error disliking post:", error);
+    console.error("BLOG CONTROLLER: Error disliking post:", error);
     res
       .status(500)
       .json({ error: "An error occurred while disliking the post" });
@@ -123,7 +103,7 @@ exports.login = async (req, res) => {
   try {
     const { loginUsername, loginPassword } = req.body;
 
-    console.log("BLOGCONTROLLER: Login Request Body:", req.body);
+    console.log("BLOG CONTROLLER: Login Request Body:", req.body);
 
     // Check if the username and password match a record in the database
     const blogger = await bloggerModel.getUserByUsernameAndPassword(
@@ -131,26 +111,26 @@ exports.login = async (req, res) => {
       loginPassword
     );
 
-    console.log("BLOGCONTROLLER: Login User:", blogger);
+    console.log("BLOG CONTROLLER: Login User:", blogger);
 
     if (blogger && blogger.username) {
       // Set the username in the session and redirect to blogger page
       req.session.username = blogger.username;
       console.log(
-        "BLOGCONTROLLER: User logged in successfully. Session username set to:",
+        "BLOG CONTROLLER: User logged in successfully. Session username set to:",
         req.session.username
       );
-      console.log("BLOGCONTROLLER: Session:", req.session);
-      return res.redirect("/admin/blog/blogger/home"); // Add return here
+      console.log("BLOG CONTROLLER: Session:", req.session);
+      return res.redirect("/admin/blog/blogger/home");
     } else {
       // Incorrect username or password, redirect back to login with an error message
       req.flash("error", "Incorrect username or password");
-      return res.redirect("/admin/blog/blogger/login"); // Add return here
+      return res.redirect("/admin/blog/blogger/login");
     }
   } catch (error) {
-    console.error("BLOGCONTROLLER: Error during login:", error);
+    console.error("BLOG CONTROLLER: Error during login:", error);
     req.flash("error", "An error occurred during login");
-    return res.redirect("/admin/blog/blogger/login"); // Add return here
+    return res.redirect("/admin/blog/blogger/login");
   }
 };
 
@@ -169,7 +149,7 @@ exports.signup = async (req, res) => {
     req.session.username = regUsername;
     return res.redirect("/admin/blog/blogger/home");
   } catch (error) {
-    console.error("BLOGCONTROLLER: Error during signup:", error);
+    console.error("BLOG CONTROLLER: Error during signup:", error);
     req.flash("error", "An error occurred during signup");
     return res.redirect("/admin/blog/blogger/login");
   }
@@ -187,7 +167,7 @@ exports.getPostById = async (req, res) => {
       res.status(404).json({ error: "Post not found" });
     }
   } catch (error) {
-    console.error("BLOGCONTROLLER: Error fetching post:", error);
+    console.error("BLOG CONTROLLER: Error fetching post:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -195,20 +175,17 @@ exports.getPostById = async (req, res) => {
 // Create post logic
 exports.createPost = async (req, res) => {
   try {
-    const bloggerUsername = req.session.username; // Get blogger username from session
-    const { title, content, category } = req.body; // Get post data from request body
-    const image = req.files && req.files.image; // Get the uploaded image
+    const bloggerUsername = req.session.username;
+    const { title, content, category } = req.body;
+    const image = req.files && req.files.image;
 
     if (!image) {
-      // If no image is uploaded, set a flash error message
       req.flash("error", "Image is required");
-      return res.redirect("/admin/blog/blogger/new-post"); // Add return here
+      return res.redirect("/admin/blog/blogger/new-post");
     }
 
-    // Call the uploadFile helper to handle the image upload
     await uploadFile(image, req.body);
 
-    // Call the controller method to create a new post
     await bloggerModel.createPost(
       bloggerUsername,
       title,
@@ -217,42 +194,37 @@ exports.createPost = async (req, res) => {
       category
     );
 
-    // Redirect to blogger home page after post creation
-    return res.redirect("/admin/blog/blogger/home"); // Add return here
+    return res.redirect("/admin/blog/blogger/home");
   } catch (error) {
-    console.error("BLOGCONTROLLER: Error creating new post:", error);
+    console.error("BLOG CONTROLLER: Error creating new post:", error);
     req.flash("error", "An error occurred while creating the post");
-    return res.redirect("/admin/blog/blogger/new-post"); // Add return here
+    return res.redirect("/admin/blog/blogger/new-post");
   }
 };
 
 // Render the new post page
 exports.renderNewPostPage = (req, res) => {
   try {
-    // Get the current year
     const currentYear = new Date().getFullYear();
-
-    // Render the new post page with current year
-    return res.render("blog/blogger/new-post", { currentYear }); // Add return here
+    return res.render("blog/blogger/new-post", { currentYear });
   } catch (error) {
-    console.error("BLOGCONTROLLER: Error rendering new post page:", error);
+    console.error("BLOG CONTROLLER: Error rendering new post page:", error);
     req.flash("error", "An error occurred while rendering the new post page");
-    return res.redirect("/admin/blog/blogger/home"); // Add return here
+    return res.redirect("/admin/blog/blogger/home");
   }
 };
 
 // Logout logic
 exports.logout = async (req, res) => {
   try {
-    // Clear the username from the session
     req.session.destroy((err) => {
       if (err) {
-        console.error("BLOGCONTROLLER: Error destroying session:", err);
+        console.error("BLOG CONTROLLER: Error destroying session:", err);
       }
-      return res.redirect("/admin/blog/blogger/login"); // Add return here
+      return res.redirect("/admin/blog/blogger/login");
     });
   } catch (error) {
-    console.error("BLOGCONTROLLER: Error during logout:", error);
-    return res.redirect("/admin/blog/blogger/home"); // Add return here
+    console.error("BLOG CONTROLLER: Error during logout:", error);
+    return res.redirect("/admin/blog/blogger/home");
   }
 };
