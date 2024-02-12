@@ -9,6 +9,7 @@ const getStudentByUsernameAndPassword = async (username, password) => {
       "SELECT * FROM yiniz_teststudents WHERE matric_number = ? AND SUBSTRING_INDEX(full_name, ' ', 1) = ?",
       [username, password]
     );
+
     return rows[0]; // Return the first row (assuming only one student per matric number)
   } catch (error) {
     throw new Error(
