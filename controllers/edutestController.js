@@ -26,9 +26,7 @@ exports.isAuthenticated = async (req, res, next) => {
 
       // Check if the current time is within a valid test session
       const validSession = testSessions.some((session) => {
-        return (
-          currentHour >= session.starthour && currentHour < session.endhour
-        );
+        return currentHour < session.endhour;
       });
 
       // Check if it's not 19 minutes before the end time of the test session
