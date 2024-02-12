@@ -12,4 +12,6 @@ router.post("/like/:postId", trackIP, blogController.likePost);
 // Route to dislike a post
 router.post("/dislike/:postId", trackIP, blogController.dislikePost);
 
+router.get("/check-ip/:postId", blogController.checkIP);
+
 module.exports = router;

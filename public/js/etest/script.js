@@ -32,7 +32,7 @@ function login() {
   var loginUsername = document.getElementById("username").value;
   var loginPassword = document.getElementById("password").value;
 
-  fetch("/edu/etest/login", {
+  fetch("/edu/etest/proceed", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -44,7 +44,7 @@ function login() {
   })
     .then((response) => {
       if (response.ok) {
-        window.location.href = "/edu/etest/home";
+        window.location.href = "/edu/test/welcome";
       } else {
         document.getElementById("loginError").innerText =
           "Invalid username or password";

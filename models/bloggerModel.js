@@ -63,21 +63,51 @@ const getPostById = async (postId) => {
 };
 
 // Like a post
-const likePost = async (postId) => {
+const likePost = async (postId, ipAddress) => {
   // Update the post in the database to increment likes
   await db.query(
     "UPDATE yiniz_bloggerposts SET likes = likes + 1 WHERE id = ?",
     [postId]
   );
+
+  // Record the IP address of the user who liked the post
+  await db.query(
+    "INSERT INTO yiniz_post_likes (post_id, ip_address) VALUES (?, ?)",
+    [postId, ipAddress]
+  );
 };
 
 // Dislike a post
-const dislikePost = async (postId) => {
+const dislikePost = async (postId, ipAddress) => {
   // Update the post in the database to decrement likes
   await db.query(
     "UPDATE yiniz_bloggerposts SET likes = likes - 1 WHERE id = ?",
     [postId]
   );
+
+  // Record the IP address of the user who disliked the post
+  await db.query(
+    "INSERT INTO yiniz_post_dislikes (post_id, ip_address) VALUES (?, ?)",
+    [postId, ipAddress]
+  );
+};
+
+// Check if a user has already liked a post
+const hasUserLikedPost = async (ipAddress, postId) => {
+  const [rows] = await db.query(
+    "SELECT * FROM yiniz_post_likes WHERE ip_address = ? AND post_id = ?",
+    [ipAddress, postId]
+  );
+  return rows.length > 0;
+};
+
+// Check if a user has already disliked a post
+const hasUserDislikedPost = async (ipAddress, postId) => {
+  const [rows] = await db.query(
+    "SELECT * FROM yiniz_post_dislikes WHERE ip_address = ? AND post_id = ?",
+    [ipAddress, postId]
+  );
+  return rows.length > 0;
 };
 
 // Create a new user
@@ -119,6 +149,8 @@ module.exports = {
   getPostById,
   likePost,
   dislikePost,
+  hasUserLikedPost,
+  hasUserDislikedPost,
   createUser,
   createPost,
   getAllPosts,

@@ -12,6 +12,7 @@
     />
     <link rel="stylesheet" href="/css/blog/style.css" />
     <link rel="stylesheet" href="/css/animate.css" />
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -36,7 +37,26 @@
   </head>
 
   <body>
-    <%- include('footer', { flashMessages: flashMessages }) %>
+    <section>
+      <% if (flashMessages && flashMessages.length > 0) { %>
+      <div class="flash-messages">
+        <% flashMessages.forEach((message) => { %>
+        <div
+          class="alert alert-<%= message.type %> alert-dismissible fade show"
+          role="alert"
+        >
+          <%= message.message %>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+        <% }); %>
+      </div>
+      <% } %>
+    </section>
     <section class="vh-100">
       <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -56,7 +76,7 @@
                     <form
                       id="loginForm"
                       class="animate__animated animate__fadeIn"
-                      action="/admin/blog/blogger/login"
+                      action="/edu/etest/proceed"
                       method="post"
                     >
                       <div class="d-flex align-items-center mb-3 pb-1">
@@ -65,7 +85,7 @@
                           style="color: #ff6219"
                         ></i>
                         <span class="h3 fw-bold mb-3"
-                          ><span class="text-warning">LINCSSA</span> |
+                          ><span class="text-warning">LIN 207</span> |
                           <span class="text-danger">E-test</span></span
                         >
                       </div>

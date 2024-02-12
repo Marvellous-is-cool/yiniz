@@ -1,7 +1,19 @@
-module.exports = (req, res, next) => {
-  console.log("Flash middleware executed");
-  req.flash = function (type, messages) {
-    req.session.flashMessages = { type, messages };
+// flash.js middleware
+const flashMiddleware = (req, res, next) => {
+  // Initialize flash messages array if not already present in session
+  req.session.flashMessages = req.session.flashMessages || [];
+
+  // Add flash function to request object
+  req.flash = (type, message) => {
+    req.session.flashMessages.push({ type, message });
   };
+
+  // Expose flash messages to views and remove them from session
+  res.locals.flashMessages = req.session.flashMessages;
+  req.session.flashMessages = [];
+
+  // Call the next middleware
   next();
 };
+
+module.exports = flashMiddleware;

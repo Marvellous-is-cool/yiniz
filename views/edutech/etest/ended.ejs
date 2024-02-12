@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Test Ended</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        color: #0c0c0c;
+        background-color: #ffffff;
+      }
+      .hero_area {
+        height: calc(100vh - 30px);
+        background: linear-gradient(to right, #0f094cca 55%, #1cbbb4 55%);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+      .container-fluid {
+        padding-right: 15px;
+        padding-left: 15px;
+      }
+      .detail-box h1 {
+        color: #ffffff;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      .detail-box p {
+        color: #ffffff;
+        margin-top: 15px;
+      }
+      .btn-box {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 45px -5px 0 -5px;
+      }
+      .btn-box a {
+        text-align: center;
+        width: 165px;
+        font-size: 15px;
+        margin: 5px;
+      }
+      .btn-1 {
+        display: inline-block;
+        padding: 10px 0;
+        background-color: #ff4f5a;
+        color: #ffffff;
+      }
+      .btn-1:hover {
+        background-color: transparent;
+        border-color: #ff4f5a;
+        color: #ff4f5a;
+      }
+      .btn-2 {
+        display: inline-block;
+        padding: 10px 0;
+        background-color: #ffffff;
+        color: #252525;
+      }
+      .btn-2:hover {
+        background-color: transparent;
+        border-color: #ffffff;
+        color: #ffffff;
+      }
+
+      .info_section {
+        background-color: #000611;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hero_area">
+      <!-- header section strats -->
+      <header class="header_section">
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg custom_nav-container row">
+            <img
+              src="/images/edu/etest/images/lincssalogo.png"
+              alt=""
+              class="w-25 col-1"
+            />
+            <span class="text-light col"
+              >LIN 207 | <b class="text-warning">Online Test</b></span
+            >
+          </nav>
+        </div>
+      </header>
+      <!-- end header section -->
+
+      <!-- slider section -->
+      <section class="slider_section mt-5">
+        <div class="container-fluid mt-5">
+          <div class="row mt-5">
+            <div class="col-md-5 offset-md-1">
+              <div class="detail-box">
+                <h3 class="userFullName"><%= userFullName %></h3>
+                <b class="userMatric"><%= userMatric %></b>
+                <h1>Your Score:</h1>
+                <h4 class="text-muted text-light">
+                  <b class="userScore"><%= userScore %></b> / 40
+                </h4>
+                <div class="btn-box">
+                  <a href="/edu/logout" class="btn-1 mt-5">Log Out</a>
+                </div>
+              </div>
+            </div>
+            <div class="offset-md-1 col-md-4 img-container">
+              <div class="img-box">
+                <img src="images/slider-img.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- end slider section -->
+    </div>
+
+    <!-- info section -->
+    <section class="info_section">
+      <div class="container layout_padding-top">
+        <div class="row">
+          <div class="col-md-12 p-5">
+            <div class="row">
+              <img
+                src="/images/edu/etest/images/lincssalogo.png"
+                alt=""
+                class="col-1"
+              />
+              <span class="col text-light w-25"
+                >LIN 207 | <b class="text-warning col">Online Test</b></span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end info section -->
+
+    <!-- footer section -->
+    <footer class="container-fluid footer_section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            &copy; 2024 All Rights Reserved.
+            <div class="footer_logo">
+              <a href="https://yiniz.com" class="text-muted"
+                >Powered by Yiniz.com</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- footer section end -->
+  </body>
+</html>

@@ -68,30 +68,72 @@ exports.getAllPostsPage = async (req, res) => {
   }
 };
 
+// Check if the IP address exists for a post
+exports.checkIP = async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const ipAddress = req.ip; // Get the IP address of the user
+
+    // Check if the IP address exists for the specified post
+    const ipExists = await bloggerModel.checkIPExistsForPost(ipAddress, postId);
+
+    res.json({ ipExists });
+  } catch (error) {
+    console.error("Error checking IP:", error);
+    res.status(500).json({ error: "An error occurred while checking IP" });
+  }
+};
+
 // Like a post
 exports.likePost = async (req, res) => {
   try {
     const postId = req.params.postId;
-    await bloggerModel.likePost(postId);
-    const updatedPost = await bloggerModel.getPostById(postId);
-    res.json(updatedPost);
-    console.log("BLOG CONTROLLER: Post liked successfully");
+    const ipAddress = req.ip; // Get the IP address of the user
+
+    // Check if the user has already liked this post
+    const hasLiked = await bloggerModel.hasUserLikedPost(ipAddress, postId);
+
+    if (hasLiked) {
+      return res
+        .status(400)
+        .json({ error: "You have already liked this post" });
+    }
+
+    await bloggerModel.likePost(ipAddress, postId);
+
+    const updatedPost = await bloggerModel.getPostById(postId); // Fetch the updated post data
+    res.json(updatedPost); // Send the updated post data in the response
+    console.log("BLOG CONTROLLER: liked updated");
   } catch (error) {
-    console.error("BLOG CONTROLLER: Error liking post:", error);
+    console.error("Error liking post:", error);
     res.status(500).json({ error: "An error occurred while liking the post" });
   }
 };
 
-// Dislike a post
 exports.dislikePost = async (req, res) => {
   try {
     const postId = req.params.postId;
-    await bloggerModel.dislikePost(postId);
-    const updatedPost = await bloggerModel.getPostById(postId);
-    res.json(updatedPost);
-    console.log("BLOG CONTROLLER: Post disliked successfully");
+    const ipAddress = req.ip; // Get the IP address of the user
+
+    // Check if the user has already disliked this post
+    const hasDisliked = await bloggerModel.hasUserDislikedPost(
+      ipAddress,
+      postId
+    );
+
+    if (hasDisliked) {
+      return res
+        .status(400)
+        .json({ error: "You have already disliked this post" });
+    }
+
+    await bloggerModel.dislikePost(ipAddress, postId);
+
+    const updatedPost = await bloggerModel.getPostById(postId); // Fetch the updated post data
+    res.json(updatedPost); // Send the updated post data in the response
+    console.log("BLOG CONTROLLER: dislike updated");
   } catch (error) {
-    console.error("BLOG CONTROLLER: Error disliking post:", error);
+    console.error("Error disliking post:", error);
     res
       .status(500)
       .json({ error: "An error occurred while disliking the post" });

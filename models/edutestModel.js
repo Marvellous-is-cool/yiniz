@@ -30,7 +30,61 @@ const getRandomQuestions = async () => {
   }
 };
 
+// Function to retrieve test sessions from the database
+const getTestSessions = async () => {
+  try {
+    // Query to retrieve test sessions
+    const [rows] = await db.execute("SELECT * FROM yiniz_test_sessions");
+    return rows; // Return the test sessions
+  } catch (error) {
+    throw new Error("Error retrieving test sessions: " + error.message);
+  }
+};
+
+// Function to retrieve scores of users from the database
+const getUserScores = async (username) => {
+  try {
+    const [rows] = await db.execute(
+      "SELECT scores FROM yiniz_teststudents WHERE matric_number = ?",
+      [username]
+    );
+    return rows[0]; // Return the first row (assuming only one score per user)
+  } catch (error) {
+    throw new Error("Error retrieving user scores: " + error.message);
+  }
+};
+
+// Function to update user's scores in the database
+const updateUserScores = async (username, score) => {
+  try {
+    // Update user's scores in the database
+    await db.execute(
+      "UPDATE yiniz_teststudents SET scores = ? WHERE matric_number = ?",
+      [score, username]
+    );
+  } catch (error) {
+    throw new Error("Error updating user scores: " + error.message);
+  }
+};
+
+// Function to retrieve user's data from the database
+const getUserData = async (username) => {
+  try {
+    const [rows] = await db.execute(
+      "SELECT matric_number AS username, full_name, scores FROM yiniz_teststudents WHERE matric_number = ?",
+      [username]
+    );
+    return rows[0]; // Return the user's data
+  } catch (error) {
+    throw new Error("Error retrieving user's data: " + error.message);
+  }
+};
+
 module.exports = {
   getStudentByUsernameAndPassword,
   getRandomQuestions,
+  getTestSessions,
+  getUserScores,
+  updateUserScores,
+  getUserData,
 };
