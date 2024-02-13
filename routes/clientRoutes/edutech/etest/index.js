@@ -42,4 +42,11 @@ router.get(
 
 router.get("/logout", edutestController.logout);
 
+// Route to render the scoreboard page, protected with authentication logic
+router.get(
+  "/test/scores",
+  edutestController.scoresAuthenticate,
+  edutestController.showScores
+);
+
 module.exports = router;

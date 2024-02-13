@@ -59,7 +59,16 @@ exports.isAuthenticated = async (req, res, next) => {
 // scores middleware
 exports.scoresAuthenticate = async (req, res, next) => {
   try {
-    // Check if the user's username is in the session
+    // Check if the user's username is 'Admin' and password is 'Admin'
+    if (
+      req.session.username === "Awoniyi" &&
+      req.body.loginPassword === "Admin"
+    ) {
+      // Redirect to a specific route (e.g., dashboard)
+      return res.redirect("/edu/test/scores");
+    }
+
+    // Otherwise, continue with the regular authentication logic
     if (req.session.username) {
       // Retrieve the username from the session
       const username = req.session.username;
@@ -90,6 +99,11 @@ exports.login = async (req, res) => {
     console.log("EDUTESTCONTROLLER: Login Request Body:", req.body);
 
     // Check if the username and password match a record in the database
+    if (loginUsername === "Awoniyi" && loginPassword === "Admin") {
+      req.session.username = loginUsername;
+      return res.redirect("/edu/test/scores"); // Replace '/admin/dashboard' with the desired route
+    }
+
     const student = await edutestModel.getStudentByUsernameAndPassword(
       loginUsername,
       loginPassword
@@ -200,6 +214,21 @@ exports.logout = async (req, res) => {
     });
   } catch (error) {
     console.error("EDU CONTROLLER: Error during logout:", error);
+    return res.redirect("/edu/etest");
+  }
+};
+
+// Controller function to show scoreboard
+exports.showScores = async (req, res) => {
+  try {
+    // Fetch students with scores greater than 0
+    const students = await edutestModel.getStudentsWithScoresGreaterThanZero();
+
+    // Render the scoreboard page with student data
+    res.render("edutech/etest/scoreboard", { students });
+  } catch (error) {
+    console.error("Error showing scoreboard:", error);
+    req.flash("error", "An error occurred while showing scoreboard");
     return res.redirect("/edu/etest");
   }
 };

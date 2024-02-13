@@ -81,6 +81,20 @@ const getUserData = async (username) => {
   }
 };
 
+// Function to retrieve students with scores greater than 0
+const getStudentsWithScoresGreaterThanZero = async () => {
+  try {
+    const [rows] = await db.execute(
+      "SELECT * FROM yiniz_teststudents WHERE scores > 0"
+    );
+    return rows; // Return students with scores greater than 0
+  } catch (error) {
+    throw new Error(
+      "Error retrieving students with scores greater than 0: " + error.message
+    );
+  }
+};
+
 module.exports = {
   getStudentByUsernameAndPassword,
   getRandomQuestions,
@@ -88,4 +102,5 @@ module.exports = {
   getUserScores,
   updateUserScores,
   getUserData,
+  getStudentsWithScoresGreaterThanZero,
 };
