@@ -1,42 +1,192 @@
+@import url(./fonts.css);
+
 /* Add these styles to your existing style.css file */
 body {
   margin: 0;
-  padding-top: 60px;
+  /* padding-top: 60px; */
   z-index: 0 !important;
 }
 
+.loading {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh;
+  flex-direction: column;
+}
+
+.load_img {
+  border: 1px solid white;
+  height: 100px;
+  width: 100px;
+  border-radius: 10px;
+}
+
+.logo_img {
+  border-radius: 60px !important;
+}
+
 #main-header {
-  position: fixed !important;
+  /* position: fixed !important; */
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #007bff; /* Royal Blue Bootstrap color */
   color: #ffffff; /* White text color */
   padding: 20px;
   transition: padding 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   z-index: 1 !important;
+  /* background-image: url("../images/yinizlogo.png");
+  /* Set opacity */
+  background-color: #0338717d;
+}
+.site-slogan {
+  font-family: "Arima";
+}
+
+.site-name {
+  font-family: "Alata";
+  font-weight: bold;
+}
+
+#menu-icon {
+  font-family: "Be Vietnam Pro";
+  font-size: 15px;
+}
+
+#nav-menu {
+  background-color: #00060c;
+}
+
+#nav-menu .nav-link {
+  color: azure;
+  font-family: "Alata";
+}
+
+.head-text_heading {
+  font-family: "Alata";
+  font-weight: bolder;
+  color: #00060c6c;
+  text-transform: uppercase;
+}
+
+.head-text_para,
+.serv_txt {
+  font-family: "Alata";
+}
+
+.anim {
+  animation: Anim 5s linear 0s infinite forwards alternate-reverse !important;
+}
+
+@keyframes Anim {
+  5% {
+    transform: rotate(30deg);
+    filter: blur(60%);
+  }
 }
 
 .float_card {
-  margin: 12em 0em !important;
+  margin: 3em 0em !important;
 }
 
 /* Box shadow when scrolled down */
 #main-header.scrolled {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
+/* Box shadow when scrolled down */
+#header-stagnat.scrolled {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
 
 /* Animated header on scroll up */
 .header-up {
   padding: 10px;
+  background-color: #0338717d;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
 }
 
-.floating {
-  box-shadow: 0px 0px 12px 2px rgba(0, 0, 0, 0.436) !important;
+.carousel-item {
+  height: 400px;
+  background-size: cover;
+  background-position: center;
 }
 
-.card.shadow-lg {
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+#ourServicesContent {
+  box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.436) !important;
+}
+
+.floating,
+.explore_floating {
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  overflow: hidden !important;
+  color: white !important;
+}
+
+.covered,
+.explore_covered {
+  background-color: #040d17;
+  opacity: 0.8;
+  height: 400px;
+  width: 450px;
+  position: absolute;
+  z-index: 0;
+}
+
+.serv_content,
+.explore_contents {
+  z-index: 1;
+  color: white;
+}
+
+.carousel-caption h5 {
+  font-family: "Arima";
+  text-decoration: underline;
+  text-decoration-color: #00060c;
+}
+
+.carousel-caption p {
+  font-family: "Amiko";
+}
+
+.explore_div {
+  background-color: #00060c;
+}
+
+.explore_covered {
+  height: 100%;
+  width: 100%;
+}
+
+.explore_contents h5 {
+  font-family: "Arima";
+  margin-top: 3em;
+  border: 2px solid #007bff;
+}
+
+.explore_contents p {
+  font-family: "Alata";
+}
+
+.explore_contents .explore_info {
+  font-family: "Arima";
+  opacity: 0.6;
+}
+
+li {
+  list-style: none;
+}
+
+.explore_contents button {
+  font-family: "Be Vietnam Pro";
+  /* box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.436) !important; */
+  z-index: -1 !important;
+  background-color: #00060c;
 }
 
 /* Remove default underline and change text color */

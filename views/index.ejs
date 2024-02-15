@@ -20,72 +20,213 @@
     <%- include('ads.ejs') %>
   </head>
   <body class="bg-light">
-    <!-- Landing Page Content -->
-    <div class="container mt-5">
-      <div id="main-header" class="header">
-        <h1 class="text-center">Yiniz</h1>
-        <p class="text-center text-light opacity-25">
-          ...Where news and business meet fun
-        </p>
-      </div>
+    <section class="loading">
+      <canvas id="canvas"></canvas>
+      <img
+        src="/images/yinizlogo.png"
+        alt="yiniz"
+        class="load_img animate__animated animate__pulse animate__infinite"
+      />
 
-      <!-- Floating Cards -->
-      <div class="row mt-5 pt-5 float_card justify-content-center">
-        <!-- 'business', 'news', 'games', 'education' cards go here -->
-        <% cards.forEach(card => { %>
-        <div class="col-md-4 ml-2 mb-4">
-          <div class="card floating">
-            <a href="<%= card.link  %>">
-              <div class="card-body">
-                <h5 class="card-title"><%= card.title %></h5>
-                <p class="card-text"><%= card.content %></p>
+      <p class="text-muted site-motto">...Where news and business meet fun</p>
+    </section>
+    <section class="content d-none">
+      <!-- Landing Page Content -->
+      <div class="">
+        <div id="main-header" class="header">
+          <div class="container-fluid">
+            <div class="row align-items-center">
+              <!-- Yiniz content -->
+              <div class="col-lg-6 order-lg-1" id="header-stagnat">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h3 class="mb-2 mb-lg-0 site-name">Yiniz</h3>
+                  <!-- Menu button for mobile -->
+                  <button
+                    class="navbar-toggler d-lg-none btn bg-dark text-white p-2"
+                    type="button"
+                    id="menu-toggle"
+                  >
+                    <span id="menu-icon">Menu</span>
+                  </button>
+                </div>
+                <!-- Navigation menu for mobile -->
+                <ul
+                  class="nav d-lg-none justify-content-between align-items-center"
+                  id="nav-menu"
+                  style="display: none"
+                >
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">E-Commerce</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Blog</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Edutech</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Games</a>
+                  </li>
+                </ul>
+                <p class="text-light opacity-25 mb-0 site-slogan">
+                  ...Where news and business meet fun
+                </p>
               </div>
-            </a>
+              <div class="mt-5 head-text w-50">
+                <h2 class="h2 text-left head-text_heading">
+                  Everything at a glance for you!
+                </h2>
+                <p class="text-light head-text_para">
+                  Welcome to the stage of fun, exciting and trilling stories,
+                  and even buying and selling that suits your desire
+                </p>
+                <button class="btn btn-dark text-light"><a href="#explore">Explore</a></button>
+              </div>
+              <!-- Image column -->
+              <div class="col-lg-6 order-lg-2">
+                <img src="/images/world.png" alt="" class="anim img-fluid" />
+              </div>
+            </div>
           </div>
         </div>
-        <% }); %>
+
+        <!-- Floating Cards -->
+        <h3
+          class="text-center p-3 serv_txt"
+          style="margin-top: 8em; color: #040d17; "
+        >
+          Our Services
+        </h3>
+        <div id="ourServicesContent" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators">
+            <% cards.forEach((card, index) => { %>
+              <li data-target="#ourServicesContent" data-slide-to="<%= index %>" <%= index === 0 ? 'class="active"' : '' %>></li>
+            <% }); %>
+          </ol>
+          <div class="carousel-inner">
+            <% cards.forEach((card, index) => { %>
+              <div class="carousel-item <%= index === 0 ? 'active' : '' %>" style="background-image: url('/images/<%= card.src %>.jpg')">
+                <div class="covered"></div>
+                <a href="<%= card.link %>" class="serv_content">
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5><%= card.title %></h5>
+                    <p><%= card.content %></p>
+                  </div>
+                </a>
+              </div>
+            <% }); %>
+          </div>
+          <a class="carousel-control-prev" href="#ourServicesContent" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#ourServicesContent" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+
+
+        <!-- Explore -->
+        <h3
+          class="text-center p-3 serv_txt"
+          style="margin-top: 8em; color: #040d17; "
+          id="explore"
+        >
+          Explore
+        </h3>
+        <div class="explore_float_card explore_div">
+          <% cards.forEach(card => { %>
+          <div class="mb-1">
+            <div
+              class="card explore_floating"
+              style="background: url('/images/<%= card.src %>.jpg')"
+            >
+              <div class="explore_covered"></div>
+              <a href="<%= card.link  %>" class="serv_content">
+                <div class="card-body explore_contents">
+                  <h5 class="card-title" style="border-image: url('/images/<%= card.src %>.jpg');"><%= card.title %></h5>
+                  <p class="card-text text-white"><%= card.content %></p>
+
+                  <p class="card-text explore_info pt-5 text-white mb-5">
+                    <%= card.explore %>
+                  </p>
+
+                  <button class="card-btn btn btn-stripped btn-rounded mt-4 text-white p-3">
+                    <a href="<%= card.link %>" class="text-white"><%= card.tag %></a>
+                  </button>
+                </div>
+              </a>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+
+        <!-- About Us -->
+        <div class="about-us mt-5 p-3">
+          <h2 style="color: #00060c;">About Us</h2>
+          <p class="text_muted">
+            At Yiniz, we believe in
+            connecting people, providing valuable information, fostering
+            learning, and promoting innovation in every aspect of life. Welcome to Yiniz – your gateway to a world of networking,
+            information, knowledge, and innovation. 
+          </p>
+        </div>
       </div>
 
-      <!-- About Us -->
-      <div class="about-us mt-5">
-        <h2 class="text-primary">About Us</h2>
-        <p class="text_muted">
-          Welcome to Yiniz – your gateway to a world of networking, information,
-          knowledge, and innovation. At Yiniz, we believe in connecting people,
-          providing valuable information, fostering learning, and promoting
-          innovation in every aspect of life.
-        </p>
-      </div>
-    </div>
+      <!-- Footer -->
+      <footer class="footer mt-5 bg-dark text-light">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-5">
+              <h5 class="btn btn-stripped border-light">Links</h5>
+                <h5 class="p-2"><a class="font-weight-bold" href="/ecommerce">Ecommerce</a></h5>
+                <h5 class="p-2"><a class="font-weight-bold" href="/blog">News</a></h5>
+                <h5 class="p-2"><a class="font-weight-bold" href="/games">Games</a></h5>
+                <h5 class="p-2"><a class="font-weight-bold" href="/edu">Edu-Tech</a></h5>
+                <h5 class="p-2"><a class="font-weight-bold" href="#">Home</a></h5>
+              </ul>
+            </div>
+            <div class="col-md-5">
+              <h5 class="btn btn-stripped border-light">Contact Us</h5>
+                <p class="h5 p-3">Ecommerce</p>
 
-    <!-- Footer -->
-    <footer class="footer mt-5 bg-dark text-light">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3">
-            <h5>Links</h5>
-            <ul>
-              <li><a href="/ecommerce">Business</a></li>
-              <li><a href="/blog">News</a></li>
-              <li><a href="/games">Games</a></li>
-              <li><a href="/edu">Edu-Tech</a></li>
-              <li><a href="#">Contact Us</a></li>
-              <li><a href="#">Job Offers</a></li>
-            </ul>
+                  <p class="p-2"><a href="https://wa.me/2347056311266?text=I'll%20like%20to%20promote%20my%20business%20through%20your%20site" class="text-danger"> Coolbuoy</a></p>
+                  </ul>
+                <p class="h5 p-3">Blog</p>
+
+                  <p class="p-2"><a href="https://wa.me/2348080120394" class="text-danger "> Albert</a></p>
+                  <p class="p-2"><a href="https://wa.me/2349066671261" class="text-danger"> F.O</a></p>
+                <p class="h5 p-3">Edu-Tech</p>
+
+                  <p class="p-2"><a href="https://wa.me/2349066671261" class="text-danger "> Maka</a></p>
+                <p class="h5 p-3">Games</p>
+                  <p class="p-2"><a href="https://wa.me/2348080120394" class="text-danger"> Albert</a></p>
+                  <p class="p-2"><a href="https://wa.me/2348025304517" class="text-danger "> F.O</a></p>
+                  <p class="p-2"><a href="https://wa.me/2349066671261" class="text-danger "> Maka</a></p>
+                  <p class="p-2"><a href="https://wa.me/2347056311266" class="text-danger "> Coolbuoy</a></p>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12 text-center">
+              <p>
+                &copy; <%= new Date().getFullYear() %> - <%= new
+                Date().getFullYear() !== 2024 ? new Date().getFullYear() : '' %>
+                Yiniz
+              </p>
+            </div>
           </div>
         </div>
-        <div class="row mt-3">
-          <div class="col-md-12 text-center">
-            <p>
-              &copy; <%= new Date().getFullYear() %> - <%= new
-              Date().getFullYear() !== 2024 ? new Date().getFullYear() : '' %>
-              Yiniz
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </section>
 
     <script type="module" src="/js/script.js"></script>
+    <script></script>
   </body>
 </html>

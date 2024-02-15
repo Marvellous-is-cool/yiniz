@@ -17,9 +17,9 @@ export const Scroll = (elem) => {
 
       // Toggle the box shadow class
       if (st > 50) {
-        $("#main-header").addClass("scrolled");
+        $(elem).addClass("scrolled");
       } else {
-        $("#main-header").removeClass("scrolled");
+        $(elem).removeClass("scrolled");
       }
 
       lastScrollTop = st;
