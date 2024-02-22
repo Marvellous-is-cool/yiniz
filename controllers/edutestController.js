@@ -6,8 +6,8 @@ exports.isAuthenticated = async (req, res, next) => {
     if (req.session.username) {
       // Retrieve the username from the session
       const username = req.session.username;
-      console.log("EDU CONTROLLER: Session found, user saved successfully");
-      console.log("The session: ", req.session);
+      // console.log("EDU CONTROLLER: Session found, user saved successfully");
+      // console.log("The session: ", req.session);
 
       // Check if the user has already completed the test (has a score)
       const userScore = await edutestModel.getUserScores(username);
@@ -40,6 +40,7 @@ exports.isAuthenticated = async (req, res, next) => {
         return next();
       } else {
         req.flash("error", "Test session is not available at the moment.");
+        console.log("Test session is not available at the moment.");
         return res.redirect("/edu/etest");
       }
     } else {
@@ -96,7 +97,7 @@ exports.login = async (req, res) => {
   try {
     const { loginUsername, loginPassword } = req.body;
 
-    console.log("EDUTESTCONTROLLER: Login Request Body:", req.body);
+    // console.log("EDUTESTCONTROLLER: Login Request Body:", req.body);
 
     // Check if the username and password match a record in the database
     if (loginUsername === "Awoniyi" && loginPassword === "Admin") {
@@ -109,16 +110,16 @@ exports.login = async (req, res) => {
       loginPassword
     );
 
-    console.log("EDUTESTCONTROLLER: Login Student:", student);
+    // console.log("EDUTESTCONTROLLER: Login Student:", student);
 
     if (student && student.matric_number) {
       // Set the username in the session and redirect to student dashboard
       req.session.username = student.matric_number;
-      console.log(
-        "EDUTESTCONTROLLER: Student logged in successfully. Session username set to:",
-        req.session.username
-      );
-      console.log("EDUTESTCONTROLLER: Session:", req.session);
+      // console.log(
+      //   "EDUTESTCONTROLLER: Student logged in successfully. Session username set to:",
+      //   req.session.username
+      // );
+      // console.log("EDUTESTCONTROLLER: Session:", req.session);
       return res.redirect("/edu/test/welcome");
     } else {
       // Incorrect username or password, redirect back to login with an error message
