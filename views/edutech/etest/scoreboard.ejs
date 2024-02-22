@@ -14,6 +14,14 @@
   <body>
     <div class="container mt-5">
       <h2>Scoreboard</h2>
+      <!-- Button for downloading Excel format -->
+      <button
+        id="downloadExcelBtn"
+        class="btn btn-success btn-rounded float-right mb-3"
+      >
+        Download Excel Format
+      </button>
+
       <table class="table">
         <thead>
           <tr>
@@ -24,9 +32,10 @@
           </tr>
         </thead>
         <tbody>
-          <% students.forEach(student => { %>
+          <% students.forEach((student, index) => { %>
           <tr>
-            <td><%= student.id %></td>
+            <!-- Generating IDs starting from 1 -->
+            <td><%= index + 1 %></td>
             <td><%= student.matric_number %></td>
             <td><%= student.full_name %></td>
             <td><%= student.scores %></td>
@@ -35,5 +44,34 @@
         </tbody>
       </table>
     </div>
+
+    <script>
+      // Function to convert table to Excel format and initiate download
+      function exportToExcel() {
+        const table = document.querySelector("table");
+        const rows = Array.from(table.querySelectorAll("tr"));
+        const csv = rows
+          .map((row) =>
+            Array.from(row.querySelectorAll("th, td"))
+              .map((cell) => cell.innerText)
+              .join(",")
+          )
+          .join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "scoreboard.csv");
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      // Attaching click event listener to the download button
+      document
+        .getElementById("downloadExcelBtn")
+        .addEventListener("click", exportToExcel);
+    </script>
   </body>
 </html>

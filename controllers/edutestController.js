@@ -137,13 +137,13 @@ exports.login = async (req, res) => {
 exports.getRandomQuestions = async (req, res) => {
   try {
     const limit = 20; // Number of random questions to retrieve
-    console.log(
-      "EDUTESTCONTROLLER: Retrieving random questions and test sessions..."
-    );
+    // console.log(
+    //   "EDUTESTCONTROLLER: Retrieving random questions and test sessions..."
+    // );
     const questions = await edutestModel.getRandomQuestions(limit);
     const testSessions = await edutestModel.getTestSessions();
-    console.log("EDUTESTCONTROLLER: Random questions retrieved:", questions);
-    console.log("EDUTESTCONTROLLER: Test sessions retrieved:", testSessions);
+    // console.log("EDUTESTCONTROLLER: Random questions retrieved:", questions);
+    // console.log("EDUTESTCONTROLLER: Test sessions retrieved:", testSessions);
     res.json({ questions, testSessions }); // Modify the response to include both questions and test sessions
   } catch (error) {
     console.error(

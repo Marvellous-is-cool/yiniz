@@ -2,14 +2,31 @@
 
 @import url("https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap");
 
+@import url(../../../fonts.css);
+
 /*--------------------------------------------------------------------- skeleton ---------------------------------------------------------------------*/
 
 * {
   box-sizing: border-box;
 }
 
+.questext {
+  font-family: "Be Vietnam Pro";
+}
+
+.selected-option {
+  font-family: "Andika";
+}
+
+.optA,
+.optB,
+.optC,
+.optD {
+  font-family: "Autour One";
+}
+
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", "Be Vietnam Pro", sans-serif;
   color: #666666;
   font-size: 14px;
   line-height: 1.80857;

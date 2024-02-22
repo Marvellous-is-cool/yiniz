@@ -28,6 +28,25 @@
         right: 0;
       }
 
+      .titlepage {
+        font-family: "Atomic Age";
+      }
+
+      .questext {
+        font-family: "Andika";
+      }
+
+      .selected-option {
+        font-family: "Andika";
+      }
+
+      .optA,
+      .optB,
+      .optC,
+      .optD {
+        font-family: "Be Vietnam Pro";
+      }
+
       /* Spinner animation */
       @keyframes windows11-loader {
         0% {
@@ -68,7 +87,7 @@
                 <a href="#">
                   <img
                     class="logo1 w-25"
-                    src="/images/edu/etest/images/lincssalogo.jpg"
+                    src="/images/edu/lincssalogo.jpg"
                     alt="#"
                   />
                 </a>
@@ -142,7 +161,7 @@
             >
               <img
                 class="logo1 w-25"
-                src="/images/edu/etest/images/lincssalogo.jpg"
+                src="/images/edu/lincssalogo.jpg"
                 alt="#"
               />
               <ul class="about_us">
@@ -185,7 +204,9 @@
                     <div class="col-md-6 offset-md-1 animate__animated question-container">
                         <div class="titlepage">
                             <h2>Question <b class="quesno">${index + 1}</b></h2>
-                            <p><b>${question.question_text}</b></p>
+                            <p class="questext"><b>${
+                              question.question_text
+                            }</b></p>
                             <h3 class="" style="border-bottom: 1px solid yellow">
                                 <span class="btn btn-primary p-2 m-1 optA"><i class="opta">A</i>.<b class="optionA">${
                                   question.option_a
