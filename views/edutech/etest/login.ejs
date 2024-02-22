@@ -110,16 +110,22 @@
                         >
                       </div>
 
-                      <div class="form-outline mb-4">
+                      <div class="form-outline mb-4 position-relative">
                         <input
                           type="password"
                           id="password"
                           name="loginPassword"
-                          class="form-control form-control-lg bg-dark text-white"
+                          class="form-control form-control-lg bg-dark text-white pr-5"
                           placeholder="Password (Your First name [case sensitive] e.g Yini)"
                         />
                         <label class="form-label text-light" for="password"
                           >Password</label
+                        >
+                        <span
+                          id="toggleText"
+                          class="password-toggle"
+                          onclick="togglePasswordVisibility()"
+                          >Show</span
                         >
                       </div>
 
@@ -132,7 +138,9 @@
                         </button>
                       </div>
 
-                      <a href="#!" class="small text-muted">Powered by yiniz</a>
+                      <a href="https://yiniz.com" class="small text-muted"
+                        >Powered by yiniz</a
+                      >
                       <a href="#!" class="small text-muted">Privacy policy</a>
                     </form>
                   </div>

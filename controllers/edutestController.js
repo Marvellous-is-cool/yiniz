@@ -6,8 +6,6 @@ exports.isAuthenticated = async (req, res, next) => {
     if (req.session.username) {
       // Retrieve the username from the session
       const username = req.session.username;
-      // console.log("EDU CONTROLLER: Session found, user saved successfully");
-      // console.log("The session: ", req.session);
 
       // Check if the user has already completed the test (has a score)
       const userScore = await edutestModel.getUserScores(username);
@@ -29,12 +27,7 @@ exports.isAuthenticated = async (req, res, next) => {
         return currentHour < session.endhour;
       });
 
-      // Check if it's not 19 minutes before the end time of the test session
-      const minutesBeforeEnd = 19; // Change this value as needed
-      const remainingMinutes = 60 - now.getMinutes();
-      const isBeforeEndTime = remainingMinutes >= minutesBeforeEnd;
-
-      if (validSession && isBeforeEndTime) {
+      if (validSession) {
         // Pass the username to the router
         res.locals.username = username;
         return next();

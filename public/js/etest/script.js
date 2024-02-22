@@ -54,3 +54,16 @@ function login() {
       console.error("Error:", error);
     });
 }
+
+function togglePasswordVisibility() {
+  var passwordField = document.getElementById("password");
+  var toggleText = document.getElementById("toggleText");
+
+  if (passwordField.type === "password") {
+    passwordField.type = "text";
+    toggleText.textContent = "Hide";
+  } else {
+    passwordField.type = "password";
+    toggleText.textContent = "Show";
+  }
+}

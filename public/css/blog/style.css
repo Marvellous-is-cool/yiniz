@@ -7,3 +7,16 @@ section {
     rgba(0, 212, 255, 1) 100%
   );
 }
+
+.password-toggle {
+  position: absolute;
+  top: -15%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: white;
+}
+
+.password-toggle:hover {
+  text-decoration: underline;
+}
