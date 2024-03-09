@@ -75,6 +75,11 @@ app.use(
 app.use("/", clientRoutes);
 app.use("/admin", authRoutes);
 
+// 404
+app.use((req, res, next) => {
+  res.status(404).render("404");
+});
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
