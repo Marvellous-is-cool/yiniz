@@ -229,6 +229,8 @@
               questionsContainer.insertAdjacentHTML("beforeend", questionHTML);
             });
 
+            console.log("Correct Answers:", correctAnswers);
+
             const questionContainers = document.querySelectorAll(
               ".question-container"
             );
@@ -250,7 +252,7 @@
               const questionIndex =
                 Array.from(questionContainers).indexOf(questionContainer);
 
-              const selectedOption = optionElement.querySelector("b");
+              const selectedOption = optionElement.querySelector("i");
               const selectedOptionText = selectedOption
                 ? selectedOption.textContent
                 : "";
@@ -355,6 +357,9 @@
 
             function calculateScore() {
               let score = 0;
+              console.log(
+                `Selected Options: ${selectedOptions} vs Correct answers ${correctAnswers}`
+              );
               for (let i = 0; i < selectedOptions.length; i++) {
                 const selectedOption = selectedOptions[i];
                 const correctAnswer = correctAnswers[i];
@@ -430,25 +435,21 @@
               const timerInterval = setInterval(updateTimer, 1000);
             }
 
-            const startDateTime = new Date();
-            startDateTime.setHours(testSessions[0].starthour, 0, 0, 0);
-
-            const endDateTime = new Date(startDateTime);
+            const endDateTime = new Date();
             endDateTime.setHours(testSessions[0].endhour, 0, 0, 0);
 
             const now = new Date();
-            if (now <= endDateTime) {
-              const difference = endDateTime - now;
-              const minutesRemaining = Math.floor(
-                (difference % (1000 * 60 * 60)) / (1000 * 60)
-              );
-              if (minutesRemaining >= 20) {
-                const twentyMinutesLater = new Date(now);
-                twentyMinutesLater.setMinutes(now.getMinutes() + 20);
+            if (
+              now !== endDateTime &&
+              now.getTime() !== endDateTime.getTime() - 19 * 60 * 1000
+            ) {
+              const twentyMinutesLater = new Date(now);
+              twentyMinutesLater.setMinutes(now.getMinutes() + 20);
+
+              if (twentyMinutesLater <= endDateTime) {
                 startTimer(now, twentyMinutesLater);
               } else {
-                timerContainer.textContent = "Test ended";
-                updateScore();
+                startTimer(now, endDateTime);
               }
             } else {
               timerContainer.textContent = "Test ended";
