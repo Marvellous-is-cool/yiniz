@@ -67,5 +67,3 @@ function togglePasswordVisibility() {
     toggleText.textContent = "Show";
   }
 }
-
-console.log("wlog...");
