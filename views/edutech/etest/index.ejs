@@ -229,6 +229,8 @@
               questionsContainer.insertAdjacentHTML("beforeend", questionHTML);
             });
 
+            console.log("Correct Answers:", correctAnswers);
+
             const questionContainers = document.querySelectorAll(
               ".question-container"
             );
@@ -355,6 +357,9 @@
 
             function calculateScore() {
               let score = 0;
+              console.log(
+                `Selected Options: ${selectedOptions} vs Correct answers ${correctAnswers}`
+              );
               for (let i = 0; i < selectedOptions.length; i++) {
                 const selectedOption = selectedOptions[i];
                 const correctAnswer = correctAnswers[i];
