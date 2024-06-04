@@ -2,7 +2,7 @@ const { uploadFilePdf } = require("../helpers/uploadFile");
 const db = require("../models/connection");
 
 const uploadFile = async (req, res) => {
-  const { student_name } = req.body;
+  const { student_name, matric_number } = req.body;
   const file = req.files.pdf; // Assuming you're using express-fileupload middleware
 
   try {
@@ -22,8 +22,8 @@ const uploadFile = async (req, res) => {
 
     // Insert the submission data into the database
     await db.execute(
-      "INSERT INTO yiniz_submissions (student_name, file_path) VALUES (?, ?)",
-      [student_name, submission.pdf] // Use submission.pdf as the file_path
+      "INSERT INTO yiniz_submissions (student_name, matric_number, file_path) VALUES (?, ?, ?)",
+      [student_name, matric_number, submission.pdf] // Use submission.pdf as the file_path
     );
 
     res.redirect("/yap/success");

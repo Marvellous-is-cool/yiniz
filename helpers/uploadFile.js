@@ -25,7 +25,6 @@ const uploadFile = async (file, object, property = "image") => {
 };
 
 const uploadFilePdf = async (file, object, property = "pdf") => {
-  console.log("uploadFilePdf called with object:", object);
   if (file && object && object.title) {
     const move = promisify(file.mv);
     if (file.mimetype.startsWith("application/pdf")) {

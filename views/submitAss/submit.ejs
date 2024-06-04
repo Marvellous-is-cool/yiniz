@@ -53,12 +53,24 @@
   </head>
   <body>
     <h1>Submit your PDF</h1>
-    <form action="/yap/submit" method="post" enctype="multipart/form-data">
+    <form
+      id="pdf-form"
+      action="/yap/submit"
+      method="post"
+      enctype="multipart/form-data"
+    >
       <label for="student_name">Name:</label>
       <input
         type="text"
         id="student_name"
         name="student_name"
+        required
+      /><br /><br />
+      <label for="matric_number">Matric Number:</label>
+      <input
+        type="text"
+        id="matric_number"
+        name="matric_number"
         required
       /><br /><br />
       <label for="pdf">PDF File:</label>
@@ -69,7 +81,35 @@
         accept="application/pdf"
         required
       /><br /><br />
-      <button type="submit">Submit</button>
+      <button type="submit" id="submit-btn" disabled>Submit</button>
     </form>
+    <script>
+      const submitBtn = document.getElementById("submit-btn");
+      const form = document.getElementById("pdf-form");
+
+      // Disable submit button initially
+      submitBtn.disabled = true;
+
+      form.addEventListener("change", function (event) {
+        // Check if all required fields are filled and a PDF is uploaded
+        const studentName = document
+          .getElementById("student_name")
+          .value.trim();
+        const matricNumber = document
+          .getElementById("matric_number")
+          .value.trim();
+        const pdfInput = document.getElementById("pdf");
+
+        if (
+          studentName !== "" &&
+          matricNumber !== "" &&
+          pdfInput.files.length
+        ) {
+          submitBtn.disabled = false; // Enable submit button if conditions met
+        } else {
+          submitBtn.disabled = true; // Keep submit button disabled otherwise
+        }
+      });
+    </script>
   </body>
 </html>

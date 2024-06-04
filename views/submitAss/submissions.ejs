@@ -4,46 +4,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Student Submissions</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif; /* Use a common fallback font */
-        margin: 2em; /* Add some margin for spacing */
-      }
-
-      h1 {
-        text-align: center; /* Center the title */
-      }
-
-      ul {
-        list-style: none; /* Remove default bullet points */
-        padding: 0; /* Remove default padding */
-        margin: 0; /* Remove default margin */
-      }
-
-      li {
-        margin-bottom: 1em; /* Add space between submissions */
-      }
-
-      a {
-        color: hsl(213deg 31% 54%); /* Define link color */
-        text-decoration: none; /* Remove underline from links */
-        font-weight: bold; /* Make links bolder */
-      }
-
-      a:hover {
-        color: hsl(213deg 31% 30%); /* Change link color on hover */
-      }
-    </style>
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/submitAss/styles.css" />
   </head>
   <body>
-    <h1>Student Submissions</h1>
-    <ul>
-      <% submissions.forEach(submission => { %>
-      <li>
-        <%= submission.student_name %>:
-        <a href="/uploads/pdfs/<%= submission.file_path %>">View PDF</a>
-      </li>
-      <% }); %>
-    </ul>
+    <h1 class="heading">
+      Students Submissions <button><a href="/yap/login">Log out</a></button>
+    </h1>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr class="table-header">
+          <th scope="col">Full Name</th>
+          <th scope="col">Matric Number</th>
+          <th scope="col">Submitted PDF</th>
+          <!-- <th scope="col">File Size</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <% submissions.forEach(submission => { %>
+        <tr>
+          <td><%= submission.student_name %></td>
+          <td><%= submission.matric_number %></td>
+          <td>
+            <a href="/uploads/pdfs/<%= submission.file_path %>">View PDF</a>
+          </td>
+          <!-- <td><span id="file-size-<%= submission.id %>">Fetching...</span></td> -->
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-OERcA2EQh7TCQv9Bm4GwPqMZ8mtTHeszwAAmwt4zTBxpdzE9upvTyTNHynOWsYpV"
+      crossorigin="anonymous"
+    ></script>
+    <script src="public/js/script.js"></script>
   </body>
 </html>

@@ -7,7 +7,6 @@ router.get(
   "/submissions",
   isLecturer,
   (req, res, next) => {
-    console.log("Reached submissions route");
     next();
   },
   assignmentSubmissionController.getSubmissions

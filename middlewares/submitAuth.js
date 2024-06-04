@@ -10,12 +10,9 @@ const isAuthenticated = (req, res, next) => {
 };
 
 const isLecturer = (req, res, next) => {
-  console.log("Checking lecturer role");
   if (req.session.user && req.session.user.role === "admin") {
-    console.log("User is admin");
     next();
   } else {
-    console.log("User is not admin");
     res.status(403).send("Forbidden");
   }
 };

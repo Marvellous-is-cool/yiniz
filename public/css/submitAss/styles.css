@@ -1,0 +1,54 @@
+/* Body styles */
+body {
+  font-family: "Arima", sans-serif; /* Use your preferred font */
+  margin: 2em;
+}
+
+/* Heading styles */
+.heading {
+  text-align: center;
+  padding-bottom: 1em;
+  font-size: 1.5rem; /* Adjust font size as needed */
+  font-weight: bold; /* Add boldness for emphasis */
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  margin-bottom: 2em;
+}
+
+.table-header {
+  background-color: #f5f5f5;
+  padding: 10px 15px;
+  text-align: center; /* Center text in header cells */
+}
+
+td,
+th {
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.75rem; /* Adjust cell padding for better spacing */
+}
+
+/* Use a lighter font weight for table body */
+tbody td,
+tbody th {
+  font-weight: normal;
+}
+
+/* Styling for anchor tags within the table */
+.table a {
+  color: #333; /* Set link color */
+  text-decoration: none; /* Remove underline */
+  font-weight: bold; /* Add slight boldness for links */
+}
+
+.table a:hover {
+  color: #007bff; /* Change link color on hover */
+}
+
+button {
+  border: 1px solid white;
+  padding: 1em;
+}
