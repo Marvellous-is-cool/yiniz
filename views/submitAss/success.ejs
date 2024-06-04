@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submission Successful</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evSX huddled7glulxJEcFDRZSjvTdQbwf2QzHB8vkT19xBxk89nsOe0HLwdgkqxK"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif; /* Modern, clean font */
+        background-color: hsl(210deg 30% 97%); /* Light background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Ensure content fills viewport */
+      }
+
+      .Setrow {
+        margin-top: 25em;
+        display: flex;
+        flex-direction: row;
+      }
+
+      button {
+        padding: 1em;
+        width: 10em;
+        margin-left: 1.5em;
+        border: 1px soild white;
+        background-color: hsl(213deg 31% 20%);
+        color: white;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 2em; /* Larger title */
+        color: hsl(213deg 31% 20%); /* Darker, contrasting color */
+        margin-bottom: 1em;
+        animation: tada 1s ease-in-out forwards; /* Animate title with tada effect */
+      }
+
+      @keyframes tada {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.1) rotateZ(-3deg);
+        }
+        .15s {
+          transform: scale(0.9) rotateZ(3deg);
+        }
+        .3s {
+          transform: scale(1.1) rotateZ(-3deg);
+        }
+        .45s {
+          transform: scale(1.05) rotateZ(3deg);
+        }
+        .75s {
+          transform: scale(1) rotateZ(-3deg);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+
+      p {
+        font-size: 1.2em; /* Slightly larger font for the message */
+        margin-bottom: 1em;
+        color: hsl(213deg 31% 50%); /* More muted message color */
+      }
+
+      a {
+        color: white;
+        text-decoration: none; /* Remove underline from links */
+        font-weight: bold; /* Make links bolder */
+        margin-right: 1em; /* Add space between links */
+        transition: all 0.3s ease-in-out; /* Smooth hover effect */
+      }
+
+      a:hover {
+        color: hsl(213deg 31% 30%); /* Change link color on hover */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Submission Successful</h1>
+
+    <p>Your PDF has been submitted successfully!</p>
+
+    <div class="Setrow">
+      <button><a href="/yap/login">Log Out</a></button>
+      <button><a href="/yap/submit">Submit Again</a></button>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-OgwbZS7/BXzYhOCvU1YTcwqT8hjkMRczT9j/h89mL9FQcuZzdVTjXNchfEagwELch"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

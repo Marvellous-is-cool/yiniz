@@ -5,7 +5,7 @@ const MySQLStore = require("express-mysql-session")(session);
 const crypto = require("crypto");
 const dotenv = require("dotenv");
 const connection = require("./models/connection");
-const flashMiddleware = require("./middlewares/flash"); // Import flash middleware
+const flash = require("./middlewares/flash"); // Import flash middleware
 
 dotenv.config();
 
@@ -16,8 +16,7 @@ const authRoutes = require("./routes/serverRoutes/index");
 const app = express();
 
 // Session configuration
-const sessionSecret =
-  process.env.SESSION_SECRET || crypto.randomBytes(20).toString("hex");
+const sessionSecret = process.env.SESSION_SECRET || "keyboard mouse";
 
 const sessionStore = new MySQLStore(
   {
@@ -38,8 +37,7 @@ const sessionConfig = {
   cookie: {
     maxAge: 24 * 60 * 60 * 1000,
     httpOnly: true,
-    // secure: process.env.NODE_ENV === "development" ? false : true,
-    secure: false,
+    secure: process.env.NODE_ENV === "development" ? true : false,
   },
   resave: false,
   saveUninitialized: false,
@@ -48,7 +46,7 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 
 // Set up flash middleware
-app.use(flashMiddleware);
+app.use(flash);
 
 // Set EJS as the view engine
 app.set("view engine", "ejs");

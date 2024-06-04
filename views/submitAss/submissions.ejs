@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Submissions</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif; /* Use a common fallback font */
+        margin: 2em; /* Add some margin for spacing */
+      }
+
+      h1 {
+        text-align: center; /* Center the title */
+      }
+
+      ul {
+        list-style: none; /* Remove default bullet points */
+        padding: 0; /* Remove default padding */
+        margin: 0; /* Remove default margin */
+      }
+
+      li {
+        margin-bottom: 1em; /* Add space between submissions */
+      }
+
+      a {
+        color: hsl(213deg 31% 54%); /* Define link color */
+        text-decoration: none; /* Remove underline from links */
+        font-weight: bold; /* Make links bolder */
+      }
+
+      a:hover {
+        color: hsl(213deg 31% 30%); /* Change link color on hover */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Student Submissions</h1>
+    <ul>
+      <% submissions.forEach(submission => { %>
+      <li>
+        <%= submission.student_name %>:
+        <a href="/uploads/pdfs/<%= submission.file_path %>">View PDF</a>
+      </li>
+      <% }); %>
+    </ul>
+  </body>
+</html>

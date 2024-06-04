@@ -24,4 +24,29 @@ const uploadFile = async (file, object, property = "image") => {
   return object; // Return the updated object
 };
 
-module.exports = uploadFile;
+const uploadFilePdf = async (file, object, property = "pdf") => {
+  console.log("uploadFilePdf called with object:", object);
+  if (file && object && object.title) {
+    const move = promisify(file.mv);
+    if (file.mimetype.startsWith("application/pdf")) {
+      // Generate a shortened title without special symbols and spaces
+      const shortenedTitle = object.title
+        .replace(/[^\w\s]/gi, "")
+        .substring(0, 12);
+
+      const fileName =
+        shortenedTitle.replace(/ /g, "-") +
+        new Date().getTime().toString(36) +
+        extname(file.name);
+      await move("uploads/pdfs/" + fileName);
+      object[property] = fileName;
+    }
+  } else {
+    console.error("Object or object.title is undefined", { object, file });
+    throw new Error("Object or object.title is undefined");
+  }
+
+  return object; // Return the updated object
+};
+
+module.exports = { uploadFile, uploadFilePdf };

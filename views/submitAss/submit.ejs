@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit PDF</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif; /* Use a common fallback font */
+        margin: 2em; /* Add some margin for spacing */
+      }
+
+      h1 {
+        text-align: center; /* Center the title */
+      }
+
+      form {
+        display: flex; /* Arrange elements horizontally */
+        flex-direction: column; /* Stack elements vertically */
+        gap: 1em; /* Add space between form elements */
+      }
+
+      label {
+        display: block; /* Make labels span the full width */
+        margin-bottom: 0.5em; /* Add space below labels */
+      }
+
+      input[type="text"] {
+        padding: 1em;
+        border: 1px solid hsl(0deg 0% 80%); /* Light border */
+        border-radius: 5px; /* Rounded corners */
+        outline: none; /* Remove default outline */
+      }
+
+      input[type="file"] {
+        padding: 1em;
+        border: 1px solid hsl(0deg 0% 80%); /* Light border */
+        border-radius: 5px; /* Rounded corners */
+        outline: none; /* Remove default outline */
+        cursor: pointer; /* Indicate clickable file input */
+      }
+
+      button[type="submit"] {
+        padding: 1em;
+        background: hsl(233deg 36% 38%); /* Define button background */
+        color: hsl(0 0 100); /* Text color */
+        border: none;
+        border-radius: 30px; /* Rounded corners */
+        font-weight: bold; /* Make button text bold */
+        cursor: pointer; /* Indicate clickable button */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Submit your PDF</h1>
+    <form action="/yap/submit" method="post" enctype="multipart/form-data">
+      <label for="student_name">Name:</label>
+      <input
+        type="text"
+        id="student_name"
+        name="student_name"
+        required
+      /><br /><br />
+      <label for="pdf">PDF File:</label>
+      <input
+        type="file"
+        id="pdf"
+        name="pdf"
+        accept="application/pdf"
+        required
+      /><br /><br />
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

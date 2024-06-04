@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <style>
+      /* Global styles */
+      * {
+        font-family: "Poppins";
+      }
+
+      /* Body styles */
+      body {
+        user-select: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: hsl(218deg 50% 91%);
+        height: 100vh;
+      }
+
+      /* Form container styles */
+      form {
+        background: hsl(0deg 0% 100%);
+        padding: 2em;
+        border-radius: 30px;
+        box-shadow: 0 0 2em hsl(231deg 62% 94%);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5em;
+      }
+
+      /* Label styles */
+      label {
+        color: hsl(0deg 0% 30%);
+        font-weight: 600;
+        margin-bottom: 0.5em;
+      }
+
+      /* Input styles */
+      input[type="text"],
+      input[type="password"] {
+        padding: 1em;
+        border: 1px solid hsl(0deg 0% 80%);
+        border-radius: 5px;
+        outline: none;
+      }
+
+      /* Register button styles */
+      button[type="submit"] {
+        padding: 1em;
+        background: hsl(233deg 36% 38%);
+        color: hsl(0 0 100);
+        border: none;
+        border-radius: 30px;
+        font-weight: 600;
+        cursor: pointer;
+        opacity: 0.7; /* Initially disabled look */
+      }
+
+      button[type="submit"]:enabled {
+        opacity: 1; /* Enabled look */
+      }
+    </style>
+    <script>
+      function validatePassword() {
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirm_password").value;
+        const registerButton = document.getElementById("registerButton");
+
+        if (password === confirmPassword) {
+          registerButton.disabled = false;
+        } else {
+          registerButton.disabled = true;
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Register</h1>
+    <form action="/yap/register" method="post">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required /><br /><br />
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        required
+        onkeyup="validatePassword()"
+      /><br /><br />
+      <label for="confirm_password">Confirm Password:</label>
+      <input
+        type="password"
+        id="confirm_password"
+        name="confirm_password"
+        required
+        onkeyup="validatePassword()"
+      /><br /><br />
+      <button type="submit" id="registerButton" disabled>Register</button>
+    </form>
+  </body>
+</html>

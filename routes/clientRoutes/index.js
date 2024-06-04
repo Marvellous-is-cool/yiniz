@@ -5,6 +5,7 @@ const businessRouter = require("./business");
 const blogRouter = require("./blog");
 const gamesRouter = require("./games");
 const edutechRouter = require("./edutech");
+const assignmentRouter = require("./submitAss");
 
 // Landing Page Route
 router.get("/", (req, res) => {
@@ -62,5 +63,7 @@ router.use("/games", gamesRouter);
 
 // Edutech Route
 router.use("/edu", edutechRouter);
+
+router.use("/yap", assignmentRouter);
 
 module.exports = router;

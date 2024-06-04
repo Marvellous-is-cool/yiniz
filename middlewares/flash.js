@@ -1,5 +1,5 @@
 // flash.js middleware
-const flashMiddleware = (req, res, next) => {
+const flash = (req, res, next) => {
   // Initialize flash messages array if not already present in session
   req.session.flashMessages = req.session.flashMessages || [];
 
@@ -12,8 +12,8 @@ const flashMiddleware = (req, res, next) => {
   res.locals.flashMessages = req.session.flashMessages;
   req.session.flashMessages = [];
 
-  // Call the next middleware
+  // Call the next
   next();
 };
 
-module.exports = flashMiddleware;
+module.exports = flash;
