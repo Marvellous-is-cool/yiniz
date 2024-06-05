@@ -4,65 +4,120 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
     <style>
-      /* Global styles */
-      * {
-        font-family: "Poppins";
-      }
-
-      /* Body styles */
       body {
-        user-select: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: hsl(218deg 50% 91%);
-        height: 100vh;
-      }
-
-      /* Form container styles */
-      form {
-        background: hsl(0deg 0% 100%);
-        padding: 2em;
-        border-radius: 30px;
-        box-shadow: 0 0 2em hsl(231deg 62% 94%);
         display: flex;
         flex-direction: column;
-        gap: 1.5em;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: hsl(218deg 50% 91%);
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 20px;
       }
-
-      /* Label styles */
-      label {
+      .header {
+        text-align: center;
+        margin-bottom: 2em;
+      }
+      .header h4 {
+        margin: 0;
+        color: #3949ab;
+        font-weight: 600;
+      }
+      .header h5 {
+        margin: 0.5em 0 0;
         color: hsl(0deg 0% 30%);
-        font-weight: 600;
-        margin-bottom: 0.5em;
+        font-weight: 400;
       }
-
-      /* Input styles */
-      input[type="text"],
-      input[type="password"] {
-        padding: 1em;
-        border: 1px solid hsl(0deg 0% 80%);
-        border-radius: 5px;
-        outline: none;
+      .container {
+        background: white;
+        padding: 2em;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
       }
-
-      /* Register button styles */
-      button[type="submit"] {
-        padding: 1em;
-        background: hsl(233deg 36% 38%);
-        color: hsl(0 0 100);
-        border: none;
-        border-radius: 30px;
-        font-weight: 600;
-        cursor: pointer;
-        opacity: 0.7; /* Initially disabled look */
+      .input-field input:focus + label {
+        color: #3949ab !important;
       }
-
-      button[type="submit"]:enabled {
-        opacity: 1; /* Enabled look */
+      .input-field input:focus {
+        border-bottom: 1px solid #3949ab !important;
+        box-shadow: 0 1px 0 0 #3949ab !important;
+      }
+      .btn {
+        background-color: #3949ab;
+        width: 100%;
+      }
+      footer {
+        text-align: center;
+        margin-top: 2em;
+        color: hsl(0deg 0% 50%);
+      }
+      footer a {
+        color: #3949ab;
+        text-decoration: none;
+        font-weight: bold;
       }
     </style>
+  </head>
+  <body>
+    <div class="header">
+      <h4>Assignment Submission</h4>
+    </div>
+
+    <div class="container">
+      <h5 style="text-align: center">Register</h5>
+      <form action="/yap/register" method="post">
+        <div class="input-field">
+          <input type="text" id="username" name="username" required />
+          <label for="username">Username</label>
+        </div>
+        <div class="input-field">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            onkeyup="validatePassword()"
+          />
+          <label for="password">Password</label>
+        </div>
+        <div class="input-field">
+          <input
+            type="password"
+            id="confirm_password"
+            name="confirm_password"
+            required
+            onkeyup="validatePassword()"
+          />
+          <label for="confirm_password">Confirm Password</label>
+        </div>
+        <button
+          type="submit"
+          id="registerButton"
+          class="btn waves-effect waves-light"
+          disabled
+        >
+          Register
+        </button>
+      </form>
+    </div>
+
+    <footer>Powered by <a href="/">Yiniz.com</a></footer>
+
     <script>
       function validatePassword() {
         const password = document.getElementById("password").value;
@@ -77,29 +132,6 @@
         }
       }
     </script>
-  </head>
-  <body>
-    <h1>Register</h1>
-    <form action="/yap/register" method="post">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required /><br /><br />
-      <label for="password">Password:</label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        required
-        onkeyup="validatePassword()"
-      /><br /><br />
-      <label for="confirm_password">Confirm Password:</label>
-      <input
-        type="password"
-        id="confirm_password"
-        name="confirm_password"
-        required
-        onkeyup="validatePassword()"
-      /><br /><br />
-      <button type="submit" id="registerButton" disabled>Register</button>
-    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   </body>
 </html>
