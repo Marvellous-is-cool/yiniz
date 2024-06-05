@@ -17,7 +17,7 @@ const createUser = async (username, password, role) => {
 
 const findUserByUsername = async (username) => {
   const [rows] = await db.execute(
-    "SELECT * FROM yiniz_submitUsers WHERE username = ?",
+    "SELECT * FROM yiniz_submitusers WHERE username = ?",
     [username]
   );
   return rows[0];
