@@ -3,7 +3,7 @@ const db = require("./connection");
 const createUser = async (username, password, role) => {
   try {
     const [result] = await db.execute(
-      "INSERT INTO yiniz_submitUsers (username, password, role) VALUES (?, ?, ?)",
+      "INSERT INTO yiniz_submitusers (username, password, role) VALUES (?, ?, ?)",
       [username, password, role]
     );
     return result;
