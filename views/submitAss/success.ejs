@@ -84,6 +84,11 @@
       a:hover {
         color: hsl(213deg 31% 30%); /* Change link color on hover */
       }
+
+      .bt-diff {
+        background-color: hsl(210deg 30% 97%);
+        border: none;
+      }
     </style>
   </head>
   <body>
@@ -93,7 +98,11 @@
 
     <div class="Setrow">
       <button><a href="/yap/login">Log Out</a></button>
-      <button><a href="/yap/submit">Submit Again</a></button>
+      <button class="bt-diff">
+        <a href="/yap/submit" style="color: rgb(65, 19, 135)"
+          >Submit for someone</a
+        >
+      </button>
     </div>
 
     <script

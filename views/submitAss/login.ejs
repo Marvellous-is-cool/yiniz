@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <link
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
     <link href="/css/animate.css" rel="stylesheet" />
@@ -13,17 +13,23 @@
     <style>
       body {
         font-family: "Be Vietnam Pro", sans-serif;
+        background: #f3f4f6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
-
-      .form-control:focus {
-        border-color: #007bff;
-        box-shadow: none;
+      .container {
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
     </style>
   </head>
   <body>
-    <div class="container mt-5">
-      <h1 class="text-center mb-4">Login</h1>
+    <div class="container w-full max-w-md mx-auto animated fadeIn">
+      <h1 class="text-2xl font-bold text-center mb-6">Login</h1>
 
       <% flashMessages.forEach(message => { %>
       <div
@@ -42,47 +48,68 @@
       </div>
       <% }); %>
 
-      <form action="/yap/login" method="post" class="animated fadeIn">
-        <div class="form-group">
-          <label for="username">Username:</label>
+      <form action="/yap/login" method="post" class="space-y-6" id="loginForm">
+        <div>
+          <label for="username" class="block text-gray-700">Username:</label>
           <input
             type="text"
-            class="form-control"
             id="username"
             name="username"
             required
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:border-blue-300"
           />
         </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <div class="input-group">
+        <div>
+          <label for="password" class="block text-gray-700">Password:</label>
+          <div class="mt-1 relative rounded-md shadow-sm">
             <input
               type="password"
-              class="form-control"
               id="password"
               name="password"
               required
+              class="block w-full pr-10 p-2 border border-gray-300 rounded-md focus:ring focus:ring-opacity-50 focus:border-blue-300"
             />
-            <div class="input-group-append">
-              <span class="input-group-text">
-                <input type="checkbox" onclick="togglePasswordVisibility()" />
-              </span>
+            <div
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+            >
+              <input
+                type="checkbox"
+                onclick="togglePasswordVisibility()"
+                class="form-checkbox"
+              />
+              <span class="ml-2 text-gray-500">Show</span>
             </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
+        <div>
+          <button
+            type="submit"
+            class="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
+          >
+            Login
+          </button>
+        </div>
       </form>
     </div>
 
     <script>
       function togglePasswordVisibility() {
         const passwordInput = document.getElementById("password");
-        if (passwordInput.type === "password") {
-          passwordInput.type = "text";
-        } else {
-          passwordInput.type = "password";
-        }
+        passwordInput.type =
+          passwordInput.type === "password" ? "text" : "password";
       }
+
+      // Client-side validation
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          const username = document.getElementById("username").value;
+          const password = document.getElementById("password").value;
+          if (username.trim() === "" || password.trim() === "") {
+            event.preventDefault();
+            alert("Both username and password are required.");
+          }
+        });
     </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -15,4 +15,11 @@ router.get("/register", (req, res) => {
 
 router.post("/register", register);
 
+router.get("/submit", (req, res) => {
+  const username = req.query.username || req.session.user.username;
+  const errorMessage = req.flash("error");
+  const successMessage = req.flash("success");
+  res.render("submitAss/submit", { username, errorMessage, successMessage });
+});
+
 module.exports = router;

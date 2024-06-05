@@ -4,112 +4,134 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Submit PDF</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link href="/css/animate.css" rel="stylesheet" />
+    <link href="/css/fonts.css" rel="stylesheet" />
     <style>
       body {
-        font-family: Arial, sans-serif; /* Use a common fallback font */
-        margin: 2em; /* Add some margin for spacing */
+        font-family: "Be Vietnam Pro", sans-serif;
+        background: #f3f4f6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
-
-      h1 {
-        text-align: center; /* Center the title */
+      .container {
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
-
-      form {
-        display: flex; /* Arrange elements horizontally */
-        flex-direction: column; /* Stack elements vertically */
-        gap: 1em; /* Add space between form elements */
+      .flash {
+        margin-top: 1em;
+        text-align: center;
       }
-
-      label {
-        display: block; /* Make labels span the full width */
-        margin-bottom: 0.5em; /* Add space below labels */
-      }
-
-      input[type="text"] {
-        padding: 1em;
-        border: 1px solid hsl(0deg 0% 80%); /* Light border */
-        border-radius: 5px; /* Rounded corners */
-        outline: none; /* Remove default outline */
-      }
-
-      input[type="file"] {
-        padding: 1em;
-        border: 1px solid hsl(0deg 0% 80%); /* Light border */
-        border-radius: 5px; /* Rounded corners */
-        outline: none; /* Remove default outline */
-        cursor: pointer; /* Indicate clickable file input */
-      }
-
-      button[type="submit"] {
-        padding: 1em;
-        background: hsl(233deg 36% 38%); /* Define button background */
-        color: hsl(0 0 100); /* Text color */
-        border: none;
-        border-radius: 30px; /* Rounded corners */
-        font-weight: bold; /* Make button text bold */
-        cursor: pointer; /* Indicate clickable button */
+      .flash.error {
+        color: red;
       }
     </style>
   </head>
-  <body>
-    <h1>Submit your PDF</h1>
-    <form
-      id="pdf-form"
-      action="/yap/submit"
-      method="post"
-      enctype="multipart/form-data"
-    >
-      <label for="student_name">Name:</label>
-      <input
-        type="text"
-        id="student_name"
-        name="student_name"
-        required
-      /><br /><br />
-      <label for="matric_number">Matric Number:</label>
-      <input
-        type="text"
-        id="matric_number"
-        name="matric_number"
-        required
-      /><br /><br />
-      <label for="pdf">PDF File:</label>
-      <input
-        type="file"
-        id="pdf"
-        name="pdf"
-        accept="application/pdf"
-        required
-      /><br /><br />
-      <button type="submit" id="submit-btn" disabled>Submit</button>
-    </form>
+  <body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="container w-full max-w-md animated fadeIn">
+      <h3 class="text-center mb-4">Welcome <%= username %></h3>
+      <h1 class="text-2xl font-bold text-center mb-6">Submit PDF</h1>
+
+      <!-- Flash messages -->
+      <% let errors = errorMessage || []; %> <% let successes = successMessage
+      || []; %> <% if (errors.length > 0) { %>
+      <div class="flash error bg-red-100 text-red-800 py-2 px-4 rounded">
+        <%= errors[0] %>
+      </div>
+      <% } %> <% if (successes.length > 0) { %>
+      <div class="flash success bg-green-100 text-green-800 py-2 px-4 rounded">
+        <%= successes[0] %>
+      </div>
+      <% } %>
+
+      <form
+        action="/yap/submit"
+        method="post"
+        enctype="multipart/form-data"
+        class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        id="submitForm"
+      >
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="student_name"
+          >
+            Student Name:
+          </label>
+          <input
+            type="text"
+            id="student_name"
+            name="student_name"
+            required
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="matric_number"
+          >
+            Matric Number:
+          </label>
+          <input
+            type="text"
+            id="matric_number"
+            name="matric_number"
+            required
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="pdf">
+            PDF:
+          </label>
+          <input
+            type="file"
+            id="pdf"
+            name="pdf"
+            accept="application/pdf"
+            required
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer"
+          />
+        </div>
+        <div class="flex items-center justify-between">
+          <button
+            type="submit"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+
+      <p class="text-danger-700 text-sm mt-4 text-center">
+        You will be redirected to the success page upon successful submission.
+        You are to submit a single pdf file under your name and matric number.
+        If you attempt to submit again, you will be redirected back here as an
+        error indicator.
+      </p>
+    </div>
+
     <script>
-      const submitBtn = document.getElementById("submit-btn");
-      const form = document.getElementById("pdf-form");
-
-      // Disable submit button initially
-      submitBtn.disabled = true;
-
-      form.addEventListener("change", function (event) {
-        // Check if all required fields are filled and a PDF is uploaded
-        const studentName = document
-          .getElementById("student_name")
-          .value.trim();
-        const matricNumber = document
-          .getElementById("matric_number")
-          .value.trim();
-        const pdfInput = document.getElementById("pdf");
-
-        if (
-          studentName !== "" &&
-          matricNumber !== "" &&
-          pdfInput.files.length
-        ) {
-          submitBtn.disabled = false; // Enable submit button if conditions met
-        } else {
-          submitBtn.disabled = true; // Keep submit button disabled otherwise
-        }
-      });
+      // Client-side validation
+      document
+        .getElementById("submitForm")
+        .addEventListener("submit", function (event) {
+          const studentName = document.getElementById("student_name").value;
+          const matricNumber = document.getElementById("matric_number").value;
+          const pdf = document.getElementById("pdf").files[0];
+          if (!studentName || !matricNumber || !pdf) {
+            event.preventDefault();
+            alert("All fields are required, including the PDF file.");
+          }
+        });
     </script>
   </body>
 </html>

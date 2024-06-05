@@ -4,41 +4,121 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Student Submissions</title>
-    <link rel="stylesheet" href="/css/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,500,700"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
     <link rel="stylesheet" href="/css/submitAss/styles.css" />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+      }
+      .heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: #3949ab;
+        color: white;
+      }
+      .table-container {
+        margin: 20px;
+      }
+      .table-header {
+        background-color: #3949ab;
+        color: white;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 12px;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      .view-pdf-link {
+        color: #3949ab;
+        font-weight: bold;
+        text-decoration: none;
+      }
+      .view-pdf-link:hover {
+        text-decoration: underline;
+      }
+      @media (max-width: 768px) {
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+          display: block;
+        }
+        thead tr {
+          display: none;
+        }
+        tr {
+          margin-bottom: 15px;
+          border-bottom: 2px solid #ddd;
+        }
+        td {
+          border-bottom: 1px solid #eee;
+          position: relative;
+          padding-left: 50%;
+        }
+        td:before {
+          position: absolute;
+          left: 6px;
+          content: attr(data-label);
+          font-weight: bold;
+        }
+      }
+    </style>
   </head>
   <body>
     <h1 class="heading">
-      Students Submissions <button><a href="/yap/login">Log out</a></button>
+      Students Submissions
+      <button class="btn waves-effect waves-light">
+        <a href="/yap/login" style="color: white">Log out</a>
+      </button>
     </h1>
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr class="table-header">
-          <th scope="col">Full Name</th>
-          <th scope="col">Matric Number</th>
-          <th scope="col">Submitted PDF</th>
-          <!-- <th scope="col">File Size</th> -->
-        </tr>
-      </thead>
-      <tbody>
-        <% submissions.forEach(submission => { %>
-        <tr>
-          <td><%= submission.student_name %></td>
-          <td><%= submission.matric_number %></td>
-          <td>
-            <a href="/uploads/pdfs/<%= submission.file_path %>">View PDF</a>
-          </td>
-          <!-- <td><span id="file-size-<%= submission.id %>">Fetching...</span></td> -->
-        </tr>
-        <% }); %>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <table class="striped">
+        <thead>
+          <tr class="table-header">
+            <th scope="col">Full Name</th>
+            <th scope="col">Matric Number</th>
+            <th scope="col">Submitted PDF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% submissions.forEach(submission => { %>
+          <tr>
+            <td data-label="Full Name"><%= submission.student_name %></td>
+            <td data-label="Matric Number"><%= submission.matric_number %></td>
+            <td data-label="Submitted PDF">
+              <a
+                href="/uploads/pdfs/<%= submission.file_path %>"
+                class="view-pdf-link"
+                >View PDF</a
+              >
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-OERcA2EQh7TCQv9Bm4GwPqMZ8mtTHeszwAAmwt4zTBxpdzE9upvTyTNHynOWsYpV"
-      crossorigin="anonymous"
-    ></script>
-    <script src="public/js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="/public/js/script.js"></script>
   </body>
 </html>
