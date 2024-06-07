@@ -47,12 +47,12 @@
       tr:nth-child(even) {
         background-color: #f2f2f2;
       }
-      .view-pdf-link {
+      .view-file-link {
         color: #3949ab;
         font-weight: bold;
         text-decoration: none;
       }
-      .view-pdf-link:hover {
+      .view-file-link:hover {
         text-decoration: underline;
       }
       @media (max-width: 768px) {
@@ -98,7 +98,7 @@
           <tr class="table-header">
             <th scope="col">Full Name</th>
             <th scope="col">Matric Number</th>
-            <th scope="col">Submitted PDF</th>
+            <th scope="col">Submitted File</th>
           </tr>
         </thead>
         <tbody>
@@ -106,11 +106,11 @@
           <tr>
             <td data-label="Full Name"><%= submission.student_name %></td>
             <td data-label="Matric Number"><%= submission.matric_number %></td>
-            <td data-label="Submitted PDF">
+            <td data-label="Submitted file">
               <a
-                href="/uploads/pdfs/<%= submission.file_path %>"
-                class="view-pdf-link"
-                >View PDF</a
+                href="/uploads/files/<%= submission.file_path %>"
+                class="view-file-link"
+                >View file</a
               >
             </td>
           </tr>

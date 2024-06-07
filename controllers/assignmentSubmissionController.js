@@ -1,4 +1,5 @@
-const { uploadFilePdf } = require("../helpers/uploadFile");
+// controllers/assignmentSubmissionController.js
+const { uploadFilePdfDoc } = require("../helpers/uploadFile");
 const db = require("../models/connection");
 const {
   findSubmissionByStudentNameAndMatricNumber,
@@ -6,11 +7,11 @@ const {
 
 const uploadFile = async (req, res) => {
   const { student_name, matric_number } = req.body;
-  const file = req.files.pdf;
+  const file = req.files.file;
 
   try {
     if (!file) {
-      req.flash("error", "PDF is required");
+      req.flash("error", "File is required");
       return res.redirect("/yap/submit");
     }
 
@@ -27,32 +28,16 @@ const uploadFile = async (req, res) => {
       return res.redirect("/yap/submit");
     }
 
-    // Check if there is an existing submission with the same combination of student name and matric number
-    const existingSubmission = await findSubmissionByStudentNameAndMatricNumber(
-      student_name,
-      matric_number
-    );
-    if (existingSubmission) {
-      req.flash(
-        "error",
-        "A submission with this student name and matric number already exists"
-      );
-      return res.redirect("/yap/submit");
-    }
-
     // Create a submission object to store the title and file path
-    const submission = {
-      title: student_name,
-      pdf: "", // Initial placeholder for the file path
-    };
+    const submission = { title: student_name, file: "" }; // Initial placeholder for the file path
 
     // Use the helper to upload the file and set the file path in the submission object
-    await uploadFilePdf(file, submission);
+    await uploadFilePdfDoc(file, submission);
 
     // Insert the submission data into the database
     await db.execute(
       "INSERT INTO yiniz_submissions (student_name, matric_number, file_path) VALUES (?, ?, ?)",
-      [student_name, matric_number, submission.pdf]
+      [student_name, matric_number, submission.file]
     );
 
     // Set success flash message

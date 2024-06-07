@@ -24,10 +24,16 @@ const uploadFile = async (file, object, property = "image") => {
   return object; // Return the updated object
 };
 
-const uploadFilePdf = async (file, object, property = "pdf") => {
+const uploadFilePdfDoc = async (file, object, property = "file") => {
   if (file && object && object.title) {
     const move = promisify(file.mv);
-    if (file.mimetype.startsWith("application/pdf")) {
+    const allowedMimeTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
+
+    if (allowedMimeTypes.includes(file.mimetype)) {
       // Generate a shortened title without special symbols and spaces
       const shortenedTitle = object.title
         .replace(/[^\w\s]/gi, "")
@@ -37,8 +43,12 @@ const uploadFilePdf = async (file, object, property = "pdf") => {
         shortenedTitle.replace(/ /g, "-") +
         new Date().getTime().toString(36) +
         extname(file.name);
-      await move("uploads/pdfs/" + fileName);
+      await move("uploads/files/" + fileName);
       object[property] = fileName;
+    } else {
+      throw new Error(
+        "Invalid file type. Only PDF and DOC/DOCX files are allowed."
+      );
     }
   } else {
     console.error("Object or object.title is undefined", { object, file });
@@ -48,4 +58,4 @@ const uploadFilePdf = async (file, object, property = "pdf") => {
   return object; // Return the updated object
 };
 
-module.exports = { uploadFile, uploadFilePdf };
+module.exports = { uploadFile, uploadFilePdfDoc };
