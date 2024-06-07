@@ -144,6 +144,7 @@
             />
             <label for="file">Choose File</label>
           </div>
+          <div class="file-name mt-2 text-gray-700"></div>
           <div class="progress">
             <div
               class="progress-bar"
@@ -155,6 +156,7 @@
               0%
             </div>
           </div>
+          <p class="upload-appear text-danger-700 text-sm mt-4 text-center"></p>
         </div>
         <div class="flex items-center justify-between">
           <button
@@ -168,9 +170,9 @@
       </form>
 
       <p class="text-danger-700 text-sm mt-4 text-center">
-        The file will be uploaded, and then you will be redirected to the
-        success page upon successful submission. Only PDF or DOC files are
-        allowed. If you attempt to submit any other file, you will be notified.
+        You will be redirected to the success page upon successful submission.
+        Only PDF or DOC files are allowed. If you attempt to submit any other
+        file, you will be notified.
       </p>
     </div>
 
@@ -193,6 +195,8 @@
               progressBar.style.width = percentComplete + "%";
               progressBar.textContent = Math.round(percentComplete) + "%";
               progressBar.setAttribute("aria-valuenow", percentComplete);
+              document.querySelector(".upload-appear").textContent =
+                "Kindly wait for the file to be uploaded (upload speed will be determined by your network)";
             }
           };
 
@@ -220,6 +224,10 @@
 
           if (!allowedTypes.includes(file.type)) {
             alert("This file format is not allowed. Only PDF/DOC is allowed.");
+          } else {
+            document.querySelector(
+              ".file-name"
+            ).textContent = `Selected file: ${file.name}`;
           }
         });
     </script>
