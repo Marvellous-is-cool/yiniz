@@ -23,13 +23,10 @@ const findUserByUsername = async (username) => {
   return rows[0];
 };
 
-const findSubmissionByStudentNameAndMatricNumber = async (
-  student_name,
-  matric_number
-) => {
+const findSubmissionByStudentNameAndLevel = async (student_name, level) => {
   const [rows] = await db.execute(
-    "SELECT * FROM yiniz_submissions WHERE student_name = ? AND matric_number = ?",
-    [student_name, matric_number]
+    "SELECT * FROM yiniz_submissions WHERE student_name = ? AND level = ?",
+    [student_name, level]
   );
   return rows[0];
 };
@@ -37,5 +34,5 @@ const findSubmissionByStudentNameAndMatricNumber = async (
 module.exports = {
   createUser,
   findUserByUsername,
-  findSubmissionByStudentNameAndMatricNumber,
+  findSubmissionByStudentNameAndLevel,
 };

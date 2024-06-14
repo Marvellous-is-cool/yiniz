@@ -1,12 +1,10 @@
 // controllers/assignmentSubmissionController.js
 const { uploadFilePdfDoc } = require("../helpers/uploadFile");
 const db = require("../models/connection");
-const {
-  findSubmissionByStudentNameAndMatricNumber,
-} = require("../models/submitUser");
+const { findSubmissionByStudentNameAndLevel } = require("../models/submitUser");
 
 const uploadFile = async (req, res) => {
-  const { student_name, matric_number } = req.body;
+  const { student_name, level } = req.body;
   const file = req.files.file;
 
   try {
@@ -16,14 +14,14 @@ const uploadFile = async (req, res) => {
     }
 
     // Check for existing submissions
-    const existingSubmissionByName =
-      await findSubmissionByStudentNameAndMatricNumber(student_name, null);
-    const existingSubmissionByMatricNumber =
-      await findSubmissionByStudentNameAndMatricNumber(null, matric_number);
-    if (existingSubmissionByName || existingSubmissionByMatricNumber) {
+    const existingSubmission = await findSubmissionByStudentNameAndLevel(
+      student_name,
+      level
+    );
+    if (existingSubmission) {
       req.flash(
         "error",
-        "A submission with this student name or matric number already exists"
+        "A submission with this student name and level already exists"
       );
       return res.redirect("/yap/submit");
     }
@@ -36,8 +34,8 @@ const uploadFile = async (req, res) => {
 
     // Insert the submission data into the database
     await db.execute(
-      "INSERT INTO yiniz_submissions (student_name, matric_number, file_path) VALUES (?, ?, ?)",
-      [student_name, matric_number, submission.file]
+      "INSERT INTO yiniz_submissions (student_name, level, file_path) VALUES (?, ?, ?)",
+      [student_name, level, submission.file]
     );
 
     // Set success flash message
@@ -58,9 +56,26 @@ const uploadFile = async (req, res) => {
 
 const getSubmissions = async (req, res) => {
   try {
-    const [submissions] = await db.execute("SELECT * FROM yiniz_submissions");
-    res.render("submitAss/submissions", { submissions });
+    const level = req.query.level; // Fetch level from query params
+
+    let query = "SELECT * FROM yiniz_submissions";
+    let queryParams = [];
+
+    if (level && level !== "all") {
+      query += " WHERE level = ?";
+      queryParams.push(level);
+    }
+
+    const [submissions] = await db.execute(query, queryParams);
+
+    // Sort submissions by submitted_at descending
+    submissions.sort(
+      (a, b) => new Date(b.submitted_at) - new Date(a.submitted_at)
+    );
+
+    res.json(submissions); // Send JSON response for AJAX requests
   } catch (err) {
+    console.error("Error retrieving submissions:", err);
     res.status(500).send("Error retrieving submissions");
   }
 };

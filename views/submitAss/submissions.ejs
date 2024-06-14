@@ -97,7 +97,7 @@
         <thead>
           <tr class="table-header">
             <th scope="col">Full Name</th>
-            <th scope="col">Matric Number</th>
+            <th scope="col">Level</th>
             <th scope="col">Submitted File</th>
           </tr>
         </thead>
@@ -105,7 +105,7 @@
           <% submissions.forEach(submission => { %>
           <tr>
             <td data-label="Full Name"><%= submission.student_name %></td>
-            <td data-label="Matric Number"><%= submission.matric_number %></td>
+            <td data-label="Level"><%= submission.level %></td>
             <td data-label="Submitted file">
               <a
                 href="/uploads/files/<%= submission.file_path %>"
