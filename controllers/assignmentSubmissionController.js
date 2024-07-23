@@ -66,14 +66,31 @@ const getSubmissions = async (req, res) => {
       queryParams.push(level);
     }
 
+    query += " ORDER BY submitted_at DESC"; // Order by submitted_at descending
+
     const [submissions] = await db.execute(query, queryParams);
 
-    // Sort submissions by submitted_at descending
-    submissions.sort(
-      (a, b) => new Date(b.submitted_at) - new Date(a.submitted_at)
-    );
+    // Group submissions by level for categorization
+    const submissionsByLevel = {};
 
-    res.json(submissions); // Send JSON response for AJAX requests
+    submissions.forEach((submission) => {
+      const level = submission.level;
+      if (!submissionsByLevel[level]) {
+        submissionsByLevel[level] = [];
+      }
+      submissionsByLevel[level].push(submission);
+    });
+
+    // Get unique levels from submissions
+    const levels = Object.keys(submissionsByLevel);
+
+    // Sort levels in ascending order (if needed)
+    levels.sort((a, b) => parseInt(a) - parseInt(b));
+
+    res.render("submitAss/submissions", {
+      submissions: submissionsByLevel,
+      levels,
+    });
   } catch (err) {
     console.error("Error retrieving submissions:", err);
     res.status(500).send("Error retrieving submissions");

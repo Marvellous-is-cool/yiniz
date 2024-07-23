@@ -93,33 +93,79 @@
       </button>
     </h1>
     <div class="table-container">
-      <table class="striped">
-        <thead>
-          <tr class="table-header">
-            <th scope="col">Full Name</th>
-            <th scope="col">Level</th>
-            <th scope="col">Submitted File</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% submissions.forEach(submission => { %>
-          <tr>
-            <td data-label="Full Name"><%= submission.student_name %></td>
-            <td data-label="Level"><%= submission.level %></td>
-            <td data-label="Submitted file">
-              <a
-                href="/uploads/files/<%= submission.file_path %>"
-                class="view-file-link"
-                >View file</a
-              >
-            </td>
-          </tr>
-          <% }); %>
-        </tbody>
-      </table>
+      <ul class="tabs">
+        <li class="tab col s3"><a href="#all" class="active">All</a></li>
+        <% levels.forEach(level => { %>
+        <li class="tab col s3">
+          <a href="#<%= level %>lvl"><%= level %>lvl</a>
+        </li>
+        <% }); %>
+      </ul>
+
+      <!-- Tab content for 'All' submissions -->
+      <div id="all" class="col s12">
+        <table class="striped">
+          <thead>
+            <tr class="table-header">
+              <th scope="col">Full Name</th>
+              <th scope="col">Level</th>
+              <th scope="col">Submitted File</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% submissions.all.forEach(submission => { %>
+            <tr>
+              <td data-label="Full Name"><%= submission.student_name %></td>
+              <td data-label="Level"><%= submission.level %></td>
+              <td data-label="Submitted file">
+                <a
+                  href="/uploads/files/<%= submission.file_path %>"
+                  class="view-file-link"
+                  >View file</a
+                >
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tab contents for submissions based on levels -->
+      <% levels.forEach(level => { %>
+      <div id="<%= level %>lvl" class="col s12">
+        <table class="striped">
+          <thead>
+            <tr class="table-header">
+              <th scope="col">Full Name</th>
+              <th scope="col">Submitted File</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% submissions[level].forEach(submission => { %>
+            <tr>
+              <td data-label="Full Name"><%= submission.student_name %></td>
+              <td data-label="Submitted file">
+                <a
+                  href="/uploads/files/<%= submission.file_path %>"
+                  class="view-file-link"
+                  >View file</a
+                >
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+      <% }); %>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="/public/js/script.js"></script>
+    <script>
+      $(document).ready(function () {
+        // Initialize Materialize tabs
+        $(".tabs").tabs();
+      });
+    </script>
   </body>
 </html>
