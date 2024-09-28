@@ -11,6 +11,11 @@
     />
     <link rel="stylesheet" href="/css/business/style.css" />
     <%- include('../ads.ejs') %>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4993685121054900"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <div class="area">
@@ -22,7 +27,14 @@
     <header class="pt-5">
       <h1 class="mt-5">Yiniz-games</h1>
       <p class="mt-3">Play games and earn real money!!</p>
-      <a href="/games/carrush" class="btn btn-primary mt-5">Play Carrush</a>
+      <div class="row">
+        <a href="/games/carrush" class="col btn btn-primary mr-3 mt-5"
+          >Play Carrush</a
+        >
+        <a href="/games/roftfsbore" class="col btn btn-warning mr-3 mt-5"
+          >Play Roftfsbore</a
+        >
+      </div>
     </header>
 
     <script type="module" src="/js/business/script.js"></script>
