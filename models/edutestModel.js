@@ -1,8 +1,12 @@
 // edutestModel.js
 const db = require("./connection");
+const useDummy = !db.isDbConnected || !db.isDbConnected();
+const dummyData = require("./dummyData");
 
 // Function to fetch student by username (matric number) and password (first word of full name)
 const getStudentByUsernameAndPassword = async (username, password) => {
+  if (useDummy)
+    return dummyData.getStudentByUsernameAndPassword(username, password);
   try {
     // Query the database to find a student with the given matric number and password
     const [rows] = await db.execute(
@@ -20,6 +24,7 @@ const getStudentByUsernameAndPassword = async (username, password) => {
 
 // Function to retrieve random questions from the database
 const getRandomQuestions = async () => {
+  if (useDummy) return dummyData.getRandomQuestions();
   try {
     // Query to retrieve 20 random questions
     const [rows] = await db.execute(
@@ -33,6 +38,7 @@ const getRandomQuestions = async () => {
 
 // Function to retrieve test sessions from the database
 const getTestSessions = async () => {
+  if (useDummy) return dummyData.getTestSessions();
   try {
     // Query to retrieve test sessions
     const [rows] = await db.execute("SELECT * FROM yiniz_test_sessions");
@@ -44,6 +50,7 @@ const getTestSessions = async () => {
 
 // Function to retrieve scores of users from the database
 const getUserScores = async (username) => {
+  if (useDummy) return dummyData.getUserScores(username);
   try {
     const [rows] = await db.execute(
       "SELECT scores FROM yiniz_teststudents WHERE matric_number = ?",
@@ -57,6 +64,7 @@ const getUserScores = async (username) => {
 
 // Function to update user's scores in the database
 const updateUserScores = async (username, score) => {
+  if (useDummy) return dummyData.updateUserScores(username, score);
   try {
     // Update user's scores in the database
     await db.execute(
@@ -70,6 +78,7 @@ const updateUserScores = async (username, score) => {
 
 // Function to retrieve user's data from the database
 const getUserData = async (username) => {
+  if (useDummy) return dummyData.getUserData(username);
   try {
     const [rows] = await db.execute(
       "SELECT matric_number AS username, full_name, scores FROM yiniz_teststudents WHERE matric_number = ?",
@@ -83,6 +92,7 @@ const getUserData = async (username) => {
 
 // Function to retrieve students with scores greater than 0
 const getStudentsWithScoresGreaterThanZero = async () => {
+  if (useDummy) return dummyData.getStudentsWithScoresGreaterThanZero();
   try {
     const [rows] = await db.execute(
       "SELECT * FROM yiniz_teststudents WHERE scores > 0"

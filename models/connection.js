@@ -15,9 +15,26 @@ const pool = mysql.createPool({
   connectTimeout: 30000,
 });
 
+let isDbConnected = false;
+
+pool
+  .getConnection()
+  .then((conn) => {
+    isDbConnected = true;
+    conn.release();
+  })
+  .catch((err) => {
+    console.error(
+      "Initial DB connection failed, using dummy data:",
+      err.message
+    );
+    isDbConnected = false;
+  });
+
 pool.on("error", (err) => {
   console.error("MySQL Pool Error:", err.message);
 });
 
 // Export the promise-based interface of the pool
 module.exports = pool;
+module.exports.isDbConnected = () => isDbConnected;

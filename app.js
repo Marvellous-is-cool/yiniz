@@ -1,7 +1,6 @@
 const express = require("express");
 const fileUpload = require("express-fileupload");
 const session = require("express-session");
-const MySQLStore = require("express-mysql-session")(session);
 const crypto = require("crypto");
 const dotenv = require("dotenv");
 const connection = require("./models/connection");
@@ -18,30 +17,46 @@ const app = express();
 // Session configuration
 const sessionSecret = process.env.SESSION_SECRET || "keyboard mouse";
 
-const sessionStore = new MySQLStore(
-  {
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-    port: process.env.MYSQL_PORT || 3306,
-    clearExpired: true,
-    checkExpirationInterval: 15 * 60 * 1000,
-  },
-  connection
-);
+let sessionConfig;
+if (connection.isDbConnected && connection.isDbConnected()) {
+  const MySQLStore = require("express-mysql-session")(session);
+  const sessionStore = new MySQLStore(
+    {
+      host: process.env.MYSQL_HOST,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
+      port: process.env.MYSQL_PORT || 3306,
+      clearExpired: true,
+      checkExpirationInterval: 15 * 60 * 1000,
+    },
+    connection
+  );
+  sessionConfig = {
+    secret: sessionSecret,
+    store: sessionStore,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "development" ? true : false,
+    },
+    resave: false,
+    saveUninitialized: false,
+  };
+} else {
+  // Use default memory store if DB is not connected
+  sessionConfig = {
+    secret: sessionSecret,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "development" ? true : false,
+    },
+    resave: false,
+    saveUninitialized: false,
+  };
+}
 
-const sessionConfig = {
-  secret: sessionSecret,
-  store: sessionStore,
-  cookie: {
-    maxAge: 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "development" ? true : false,
-  },
-  resave: false,
-  saveUninitialized: false,
-};
 // Set up session middleware
 app.use(session(sessionConfig));
 
