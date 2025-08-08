@@ -1,0 +1,27 @@
+# Render Deployment Configuration
+version: 1
+
+services:
+  # Web Service
+  - type: web
+    name: yiniz-app
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: yiniz-database
+          property: connectionString
+
+  # PostgreSQL Database (Free 10GB)
+  - type: pgsql
+    name: yiniz-database
+    plan: free
+    databaseName: yiniz_db
+    user: yiniz_user

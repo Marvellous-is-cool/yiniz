@@ -126,7 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Calculate the user's score
   function calculateScore() {
     let score = 0;
-    // Assuming selectedOptions array contains the selected options and questions array contains the correct answers
     for (let i = 0; i < selectedOptions.length; i++) {
       const selectedOption = selectedOptions[i];
       const correctAnswer = questions[i].correct_answer;
@@ -136,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Increment the score by 1 for each correct answer
         score++;
       }
-    }
+    } 
     return score;
   }
 

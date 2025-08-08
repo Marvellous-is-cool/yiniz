@@ -4,6 +4,8 @@
   "description": "Where news and business meet fun",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js",
     "test": "node app.js"
   },
   "keywords": [
