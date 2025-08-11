@@ -2,6 +2,16 @@ const express = require("express");
 const router = express.Router();
 const edutestController = require("../../../../controllers/edutestController");
 
+// Debug route
+router.get("/debug", (req, res) => {
+  res.json({
+    message: "Server is working",
+    timestamp: new Date().toISOString(),
+    session: req.session,
+    sessionID: req.sessionID,
+  });
+});
+
 // login page
 router.get("/etest", (req, res) => {
   return res.render("edutech/etest/login", {
@@ -48,5 +58,18 @@ router.get(
   edutestController.scoresAuthenticate,
   edutestController.showScores
 );
+
+// NEW: ML Dashboard route (for teachers/admins)
+router.get("/ml/dashboard", (req, res) => {
+  res.render("edutech/etest/ml-dashboard");
+});
+
+// NEW ML-powered routes for teacher insights
+router.get(
+  "/insights/question/:questionId",
+  edutestController.getQuestionInsights
+);
+router.get("/insights/overall", edutestController.getOverallInsights);
+router.post("/ml/train", edutestController.trainMLModels);
 
 module.exports = router;

@@ -5,6 +5,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize an array to store selected options for each question
   const selectedOptions = new Array(questionContainers.length).fill(null);
+  const answerTimestamps = new Array(questionContainers.length).fill(null);
+  const questionStartTimes = new Array(questionContainers.length).fill(null);
+
+  // Track when each question is first viewed
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const questionIndex = Array.from(questionContainers).indexOf(
+          entry.target
+        );
+        if (questionStartTimes[questionIndex] === null) {
+          questionStartTimes[questionIndex] = new Date();
+        }
+      }
+    });
+  });
+
+  questionContainers.forEach((container) => {
+    observer.observe(container);
+  });
 
   function selectOption(optionElement) {
     const questionContainer = optionElement.closest(".question-container");
@@ -20,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedOption = optionElement.querySelector("i");
     const selectedOptionText = selectedOption ? selectedOption.textContent : ""; // Check if selectedOption is null
     selectedOptions[questionIndex] = selectedOptionText;
+    answerTimestamps[questionIndex] = new Date();
 
     // Update the selected option display
     const selectedOptionP = questionContainer.querySelector(".selected-option");
@@ -123,29 +144,110 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Calculate the user's score
+  // Calculate the user's score and prepare detailed answer data
   function calculateScore() {
     let score = 0;
+    const detailedAnswers = [];
+
     for (let i = 0; i < selectedOptions.length; i++) {
       const selectedOption = selectedOptions[i];
       const correctAnswer = questions[i].correct_answer;
+      const isCorrect = selectedOption === correctAnswer;
 
-      // Check if the selected option matches the correct answer
-      if (selectedOption === correctAnswer) {
-        // Increment the score by 1 for each correct answer
+      if (isCorrect) {
         score++;
       }
-    } 
-    return score;
+
+      // Calculate time spent on this question
+      let timeSpent = 0;
+      if (questionStartTimes[i] && answerTimestamps[i]) {
+        timeSpent = Math.round(
+          (answerTimestamps[i] - questionStartTimes[i]) / 1000
+        );
+      }
+
+      // Prepare detailed answer data for ML analysis
+      detailedAnswers.push({
+        questionId: questions[i].id,
+        questionText: questions[i].question,
+        questionType: "multiple_choice",
+        userAnswer: selectedOption,
+        correctAnswer: correctAnswer,
+        isCorrect: isCorrect,
+        timeSpent: timeSpent,
+        options: {
+          a: questions[i].option_a,
+          b: questions[i].option_b,
+          c: questions[i].option_c,
+          d: questions[i].option_d,
+        },
+      });
+    }
+
+    return { score, detailedAnswers };
   }
 
-  // Submit button click event
+  // Submit button click event with ML integration
   submitButton.addEventListener("click", function () {
-    // Calculate the user's score
-    const userScore = calculateScore();
+    // Calculate the user's score and get detailed answers
+    const result = calculateScore();
+    const userScore = result.score;
+    const detailedAnswers = result.detailedAnswers;
 
-    // Display the user's score (you can replace this with your desired logic to handle the score)
-    alert("User's score: " + userScore);
+    // Prepare data for ML analysis
+    const submissionData = {
+      username: username, // Make sure username is available in the global scope
+      score: userScore,
+      answers: detailedAnswers,
+      totalQuestions: questions.length,
+      submissionTime: new Date().toISOString(),
+    };
+
+    // Send data to server for ML analysis and score update
+    fetch("/edu/test/update-score", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(submissionData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Show success message with ML insights
+          alert(
+            `Test completed! Score: ${userScore}/${questions.length}\n\n🤖 Your answers are being analyzed by AI for personalized feedback.`
+          );
+
+          // Redirect will be handled by server
+          window.location.href = "/edu/test/session-ended";
+        } else {
+          throw new Error("Submission failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Error submitting test:", error);
+        alert("Error submitting test. Please try again.");
+
+        // Fallback: still try to update score with basic data
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/edu/test/update-score";
+
+        const usernameInput = document.createElement("input");
+        usernameInput.type = "hidden";
+        usernameInput.name = "username";
+        usernameInput.value = username;
+
+        const scoreInput = document.createElement("input");
+        scoreInput.type = "hidden";
+        scoreInput.name = "score";
+        scoreInput.value = userScore;
+
+        form.appendChild(usernameInput);
+        form.appendChild(scoreInput);
+        document.body.appendChild(form);
+        form.submit();
+      });
   });
 
   // Timer functionality

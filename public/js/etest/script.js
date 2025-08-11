@@ -42,16 +42,23 @@ function login() {
       loginPassword: loginPassword,
     }),
   })
-    .then((response) => {
-      if (response.ok) {
-        window.location.href = "/edu/test/welcome";
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        window.location.href = data.redirect;
       } else {
-        document.getElementById("loginError").innerText =
-          "Invalid username or password";
+        // Show error message
+        const errorElement = document.getElementById("loginError");
+        if (errorElement) {
+          errorElement.innerText = data.error || "Invalid username or password";
+        } else {
+          alert(data.error || "Invalid username or password");
+        }
       }
     })
     .catch((error) => {
       console.error("Error:", error);
+      alert("An error occurred during login");
     });
 }
 
