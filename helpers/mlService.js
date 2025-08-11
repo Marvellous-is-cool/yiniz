@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
 
-const ML_BASE_URL = "http://localhost:8000";
+const ML_BASE_URL = "https://yinizai.onrender.com";
 
 // Check ML service health
 exports.checkHealth = async () => {
