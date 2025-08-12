@@ -38,10 +38,12 @@ if (connection.isDbConnected && connection.isDbConnected()) {
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production" ? true : false,
+      secure: process.env.NODE_ENV === "production" && process.env.USE_HTTPS === "true",
+      sameSite: process.env.NODE_ENV === "production" ? "lax" : "lax",
     },
     resave: false,
     saveUninitialized: false,
+    name: 'yiniz.sid', // Custom session name
   };
 } else {
   // Use default memory store if DB is not connected
@@ -50,7 +52,8 @@ if (connection.isDbConnected && connection.isDbConnected()) {
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production" ? true : false,
+      secure: process.env.NODE_ENV === "production" && process.env.USE_HTTPS === "true",
+      sameSite: process.env.NODE_ENV === "production" ? "lax" : "lax",
     },
     resave: false,
     saveUninitialized: false,
