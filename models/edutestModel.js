@@ -48,20 +48,34 @@ const getRandomQuestions = async (limit = 20) => {
   }
 
   try {
-    // Query to retrieve random questions with ML predictions if available
-    const [rows] = await db.execute(
-      `
-      SELECT 
+    // Ensure limit is a valid integer
+    const questionLimit = parseInt(limit) || 20;
+    
+    // Query to retrieve random questions (using query instead of execute)
+    const [rows] = await db.query(
+      `SELECT 
         id, question, option_a, option_b, option_c, option_d, correct_answer,
-        predicted_difficulty, prediction_confidence, calculated_difficulty,
-        question_type, subject
+        subject, difficulty, created_at, updated_at
       FROM yiniz_etest 
       ORDER BY RAND() 
-      LIMIT ?
-    `,
-      [limit]
+      LIMIT ${questionLimit}`
     );
-    return rows;
+
+    // Return questions with existing fields only
+    return rows.map((question) => ({
+      id: question.id,
+      question: question.question,
+      option_a: question.option_a,
+      option_b: question.option_b,
+      option_c: question.option_c,
+      option_d: question.option_d,
+      correct_answer: question.correct_answer,
+      subject: question.subject,
+      difficulty: question.difficulty, // Use the actual difficulty field
+      created_at: question.created_at,
+      updated_at: question.updated_at,
+      question_type: "multiple_choice",
+    }));
   } catch (error) {
     throw new Error("Error retrieving random questions: " + error.message);
   }
@@ -289,6 +303,64 @@ const getStudentsWithScoresGreaterThanZero = async () => {
   }
 };
 
+// Function to get student answers with question text for ML analysis
+const getStudentAnswers = async (studentId) => {
+  const isDbAvailable = await testDbConnection();
+  if (!isDbAvailable) return [];
+  
+  try {
+    const [rows] = await db.execute(`
+      SELECT 
+        sa.id,
+        sa.student_id,
+        sa.question_id,
+        sa.answer_text,
+        sa.time_spent,
+        sa.actual_score,
+        sa.predicted_score,
+        sa.comprehension_cluster,
+        sa.ml_analysis,
+        q.question_text,
+        q.correct_answer
+      FROM student_answers sa
+      JOIN yiniz_etest q ON sa.question_id = q.id
+      WHERE sa.student_id = ?
+      ORDER BY sa.created_at DESC
+    `, [studentId]);
+    return rows;
+  } catch (error) {
+    console.error("Error retrieving student answers:", error);
+    return [];
+  }
+};
+
+// Function to update ML analysis for a student answer
+const updateStudentAnswerML = async (answerId, mlData) => {
+  const isDbAvailable = await testDbConnection();
+  if (!isDbAvailable) return false;
+  
+  try {
+    await db.execute(`
+      UPDATE student_answers 
+      SET 
+        predicted_score = ?,
+        comprehension_cluster = ?,
+        ml_analysis = ?,
+        updated_at = NOW()
+      WHERE id = ?
+    `, [
+      mlData.predictedScore,
+      mlData.comprehensionCluster,
+      JSON.stringify(mlData.mlAnalysis),
+      answerId
+    ]);
+    return true;
+  } catch (error) {
+    console.error("Error updating student answer ML data:", error);
+    return false;
+  }
+};
+
 module.exports = {
   getStudentByUsernameAndPassword,
   getRandomQuestions,
@@ -301,4 +373,6 @@ module.exports = {
   saveStudentAnswer,
   updateQuestionMLData,
   getQuestionAnswers,
+  getStudentAnswers,
+  updateStudentAnswerML,
 };

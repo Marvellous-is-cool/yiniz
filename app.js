@@ -43,7 +43,7 @@ if (connection.isDbConnected && connection.isDbConnected()) {
     },
     resave: false,
     saveUninitialized: false,
-    name: 'yiniz.sid', // Custom session name
+    name: "yiniz.sid", // Custom session name
   };
 } else {
   // Use default memory store if DB is not connected

@@ -156,40 +156,10 @@ exports.getRandomQuestions = async (req, res) => {
     const questions = await edutestModel.getRandomQuestions(limit);
     const testSessions = await edutestModel.getTestSessions();
 
-    // If ML is healthy, analyze questions that don't have predictions yet
-    if (isMLHealthy) {
-      for (const question of questions) {
-        if (!question.predicted_difficulty) {
-          try {
-            const mlAnalysis = await mlService.analyzeQuestion({
-              question_text: question.question,
-              question_type: question.question_type || "multiple_choice",
-              subject: question.subject || "General",
-              correct_answer: question.correct_answer,
-            });
-
-            if (mlAnalysis && mlAnalysis.difficulty_prediction) {
-              // Update question with ML prediction
-              await edutestModel.updateQuestionMLData(question.id, {
-                predictedDifficulty:
-                  mlAnalysis.difficulty_prediction.predicted_difficulty,
-                predictionConfidence:
-                  mlAnalysis.difficulty_prediction.confidence,
-              });
-
-              // Update the question object for the response
-              question.predicted_difficulty =
-                mlAnalysis.difficulty_prediction.predicted_difficulty;
-              question.prediction_confidence =
-                mlAnalysis.difficulty_prediction.confidence;
-            }
-          } catch (error) {
-            console.error(`Failed to analyze question ${question.id}:`, error);
-          }
-        }
-      }
-    }
-
+    // Skip ML analysis during question loading to ensure fast response
+    // ML analysis will be done after test completion
+    console.log("📚 Questions loaded without ML analysis - analysis will run after test completion");
+    
     res.json({
       questions,
       testSessions,
@@ -197,6 +167,7 @@ exports.getRandomQuestions = async (req, res) => {
         available: isMLHealthy,
         analyzed: questions.filter((q) => q.predicted_difficulty).length,
         total: questions.length,
+        note: "ML analysis will run after test completion"
       },
     });
   } catch (error) {
@@ -305,6 +276,38 @@ exports.sessionEnded = async (req, res) => {
     const userScore = await edutestModel.getUserScores(username);
     const userFullName = req.session.full_name; // Assuming full name is stored in session
     const userMatric = req.session.matric_number; // Assuming matric number is stored in session
+
+    // Trigger ML analysis for completed test (async, don't block the response)
+    if (username) {
+      console.log('🔬 Triggering post-test ML analysis for student:', username);
+      setImmediate(async () => {
+        try {
+          const studentAnswers = await edutestModel.getStudentAnswers(username);
+          console.log(`📊 Analyzing ${studentAnswers.length} student answers for ML insights`);
+          
+          for (const answer of studentAnswers) {
+            try {
+              if (answer.question_text && !answer.ml_analysis) {
+                const mlAnalysis = await mlService.analyzeQuestion(answer.question_text);
+                if (mlAnalysis) {
+                  await edutestModel.updateStudentAnswerML(answer.id, {
+                    predictedScore: mlAnalysis.score_prediction?.predicted_score,
+                    comprehensionCluster: mlAnalysis.comprehension_analysis?.comprehension_cluster,
+                    mlAnalysis: mlAnalysis
+                  });
+                  console.log(`✅ Updated ML analysis for answer ${answer.id}`);
+                }
+              }
+            } catch (mlError) {
+              console.error(`ML analysis failed for answer ${answer.id}:`, mlError);
+            }
+          }
+          console.log('🎉 Post-test ML analysis completed for student:', username);
+        } catch (analysisError) {
+          console.error('Post-test ML analysis error:', analysisError);
+        }
+      });
+    }
 
     if (userScore) {
       const userScores = userScore.scores; // Assuming scores are retrieved correctly
