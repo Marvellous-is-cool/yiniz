@@ -158,8 +158,10 @@ exports.getRandomQuestions = async (req, res) => {
 
     // Skip ML analysis during question loading to ensure fast response
     // ML analysis will be done after test completion
-    console.log("📚 Questions loaded without ML analysis - analysis will run after test completion");
-    
+    console.log(
+      "📚 Questions loaded without ML analysis - analysis will run after test completion"
+    );
+
     res.json({
       questions,
       testSessions,
@@ -167,7 +169,7 @@ exports.getRandomQuestions = async (req, res) => {
         available: isMLHealthy,
         analyzed: questions.filter((q) => q.predicted_difficulty).length,
         total: questions.length,
-        note: "ML analysis will run after test completion"
+        note: "ML analysis will run after test completion",
       },
     });
   } catch (error) {
@@ -279,32 +281,44 @@ exports.sessionEnded = async (req, res) => {
 
     // Trigger ML analysis for completed test (async, don't block the response)
     if (username) {
-      console.log('🔬 Triggering post-test ML analysis for student:', username);
+      console.log("🔬 Triggering post-test ML analysis for student:", username);
       setImmediate(async () => {
         try {
           const studentAnswers = await edutestModel.getStudentAnswers(username);
-          console.log(`📊 Analyzing ${studentAnswers.length} student answers for ML insights`);
-          
+          console.log(
+            `📊 Analyzing ${studentAnswers.length} student answers for ML insights`
+          );
+
           for (const answer of studentAnswers) {
             try {
               if (answer.question_text && !answer.ml_analysis) {
-                const mlAnalysis = await mlService.analyzeQuestion(answer.question_text);
+                const mlAnalysis = await mlService.analyzeQuestion(
+                  answer.question_text
+                );
                 if (mlAnalysis) {
                   await edutestModel.updateStudentAnswerML(answer.id, {
-                    predictedScore: mlAnalysis.score_prediction?.predicted_score,
-                    comprehensionCluster: mlAnalysis.comprehension_analysis?.comprehension_cluster,
-                    mlAnalysis: mlAnalysis
+                    predictedScore:
+                      mlAnalysis.score_prediction?.predicted_score,
+                    comprehensionCluster:
+                      mlAnalysis.comprehension_analysis?.comprehension_cluster,
+                    mlAnalysis: mlAnalysis,
                   });
                   console.log(`✅ Updated ML analysis for answer ${answer.id}`);
                 }
               }
             } catch (mlError) {
-              console.error(`ML analysis failed for answer ${answer.id}:`, mlError);
+              console.error(
+                `ML analysis failed for answer ${answer.id}:`,
+                mlError
+              );
             }
           }
-          console.log('🎉 Post-test ML analysis completed for student:', username);
+          console.log(
+            "🎉 Post-test ML analysis completed for student:",
+            username
+          );
         } catch (analysisError) {
-          console.error('Post-test ML analysis error:', analysisError);
+          console.error("Post-test ML analysis error:", analysisError);
         }
       });
     }

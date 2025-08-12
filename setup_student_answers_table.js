@@ -1,4 +1,4 @@
-const db = require('./models/connection');
+const db = require("./models/connection");
 
 async function createStudentAnswersTable() {
   try {
@@ -20,10 +20,10 @@ async function createStudentAnswersTable() {
         INDEX idx_created_at (created_at)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `;
-    
+
     await db.execute(createTableSQL);
-    console.log('✅ yiniz_student_answers table created successfully');
-    
+    console.log("✅ yiniz_student_answers table created successfully");
+
     // Also add the student_answers table name (without yiniz_ prefix for compatibility)
     const createAliasTableSQL = `
       CREATE TABLE IF NOT EXISTS student_answers (
@@ -43,13 +43,13 @@ async function createStudentAnswersTable() {
         INDEX idx_created_at (created_at)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `;
-    
+
     await db.execute(createAliasTableSQL);
-    console.log('✅ student_answers table created successfully');
-    
+    console.log("✅ student_answers table created successfully");
+
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error creating student_answers table:', error);
+    console.error("❌ Error creating student_answers table:", error);
     process.exit(1);
   }
 }

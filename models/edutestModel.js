@@ -50,7 +50,7 @@ const getRandomQuestions = async (limit = 20) => {
   try {
     // Ensure limit is a valid integer
     const questionLimit = parseInt(limit) || 20;
-    
+
     // Query to retrieve random questions (using query instead of execute)
     const [rows] = await db.query(
       `SELECT 
@@ -307,9 +307,10 @@ const getStudentsWithScoresGreaterThanZero = async () => {
 const getStudentAnswers = async (studentId) => {
   const isDbAvailable = await testDbConnection();
   if (!isDbAvailable) return [];
-  
+
   try {
-    const [rows] = await db.execute(`
+    const [rows] = await db.execute(
+      `
       SELECT 
         sa.id,
         sa.student_id,
@@ -326,7 +327,9 @@ const getStudentAnswers = async (studentId) => {
       JOIN yiniz_etest q ON sa.question_id = q.id
       WHERE sa.student_id = ?
       ORDER BY sa.created_at DESC
-    `, [studentId]);
+    `,
+      [studentId]
+    );
     return rows;
   } catch (error) {
     console.error("Error retrieving student answers:", error);
@@ -338,9 +341,10 @@ const getStudentAnswers = async (studentId) => {
 const updateStudentAnswerML = async (answerId, mlData) => {
   const isDbAvailable = await testDbConnection();
   if (!isDbAvailable) return false;
-  
+
   try {
-    await db.execute(`
+    await db.execute(
+      `
       UPDATE student_answers 
       SET 
         predicted_score = ?,
@@ -348,12 +352,14 @@ const updateStudentAnswerML = async (answerId, mlData) => {
         ml_analysis = ?,
         updated_at = NOW()
       WHERE id = ?
-    `, [
-      mlData.predictedScore,
-      mlData.comprehensionCluster,
-      JSON.stringify(mlData.mlAnalysis),
-      answerId
-    ]);
+    `,
+      [
+        mlData.predictedScore,
+        mlData.comprehensionCluster,
+        JSON.stringify(mlData.mlAnalysis),
+        answerId,
+      ]
+    );
     return true;
   } catch (error) {
     console.error("Error updating student answer ML data:", error);

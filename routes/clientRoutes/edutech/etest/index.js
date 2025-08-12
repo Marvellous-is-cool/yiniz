@@ -122,15 +122,15 @@ router.get("/debug/questions", async (req, res) => {
 router.get("/debug/ml", async (req, res) => {
   try {
     const mlService = require("../../../../helpers/mlService");
-    
+
     // Check ML service health
     console.log("🔍 Checking ML service health...");
     const isHealthy = await mlService.checkHealth();
     console.log("✅ ML service health result:", isHealthy);
-    
+
     let testAnalysis = null;
     let analysisError = null;
-    
+
     if (isHealthy && isHealthy.healthy) {
       // Test ML analysis with a sample question
       try {
@@ -139,15 +139,18 @@ router.get("/debug/ml", async (req, res) => {
           question_text: "What is the capital of Nigeria?",
           question_type: "multiple_choice",
           subject: "Geography",
-          correct_answer: "B"
+          correct_answer: "B",
         });
-        console.log("📊 ML analysis result:", JSON.stringify(testAnalysis, null, 2));
+        console.log(
+          "📊 ML analysis result:",
+          JSON.stringify(testAnalysis, null, 2)
+        );
       } catch (error) {
         console.error("❌ ML analysis error:", error);
         analysisError = error.message;
       }
     }
-    
+
     res.json({
       status: "success",
       timestamp: new Date().toISOString(),
@@ -155,16 +158,18 @@ router.get("/debug/ml", async (req, res) => {
         healthy: isHealthy,
         testAnalysis: testAnalysis,
         analysisError: analysisError,
-        message: (isHealthy && isHealthy.healthy) ? "ML service is working" : "ML service is not available"
-      }
+        message:
+          isHealthy && isHealthy.healthy
+            ? "ML service is working"
+            : "ML service is not available",
+      },
     });
-    
   } catch (error) {
     console.error("💥 ML debug error:", error);
     res.status(500).json({
       status: "error",
       error: error.message,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 });

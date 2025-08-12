@@ -49,14 +49,16 @@ exports.analyzeQuestion = async (questionData) => {
       // Transform the response back to our expected format
       return {
         difficulty_prediction: {
-          predicted_difficulty: result.difficulty_prediction?.predicted_difficulty,
+          predicted_difficulty:
+            result.difficulty_prediction?.predicted_difficulty,
           confidence: result.difficulty_prediction?.confidence,
           probabilities: result.difficulty_prediction?.probabilities,
         },
         features_extracted: result.features_extracted,
         analysis_timestamp: result.analysis_timestamp,
         // Also include the simple format for backward compatibility
-        predicted_difficulty: result.difficulty_prediction?.predicted_difficulty,
+        predicted_difficulty:
+          result.difficulty_prediction?.predicted_difficulty,
         confidence: result.difficulty_prediction?.confidence,
         probabilities: result.difficulty_prediction?.probabilities,
         features: result.features_extracted,
